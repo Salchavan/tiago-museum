@@ -1,3 +1,8 @@
+/**
+ * Estructura mínima de noticia consumida por el modal.
+ *
+ * Se carga desde public/data/n.json (en build queda como dist/data/n.json).
+ */
 interface NewsItem {
   date: string;
   type: string;
@@ -6,6 +11,15 @@ interface NewsItem {
   link?: string;
 }
 
+/**
+ * Modal “Ver todas las noticias”.
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-news-modal
+ * - Modal overlay: #news-modal
+ * - Botón cerrar: [data-modal-close]
+ * - Contenedor listado: #news-modal-list
+ */
 const setupNewsModal = (): void => {
   const openButton = document.getElementById('open-news-modal');
   const modal = document.getElementById('news-modal');
@@ -20,6 +34,7 @@ const setupNewsModal = (): void => {
     return;
   }
 
+  // Abre/cierra el modal y bloquea el scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');
@@ -46,11 +61,13 @@ const setupNewsModal = (): void => {
   });
 
   if (newsListContainer) {
+    // Se carga una vez al inicializar. Si querés refrescar, podés re-llamar acá.
     loadNewsEntries(newsListContainer);
   }
 };
 
 const loadNewsEntries = async (container: HTMLElement): Promise<void> => {
+  // Estado de carga.
   container.innerHTML = `
     <div class="text-gray-500 text-sm col-span-full">
       Cargando noticias...
@@ -58,6 +75,7 @@ const loadNewsEntries = async (container: HTMLElement): Promise<void> => {
   `;
 
   try {
+    // Respeta BASE_URL para GitHub Pages (project-site).
     const response = await fetch(`${import.meta.env.BASE_URL}data/n.json`);
     if (!response.ok) {
       throw new Error('No se pudo obtener la lista de noticias');
@@ -92,10 +110,12 @@ const loadNewsEntries = async (container: HTMLElement): Promise<void> => {
 };
 
 const createNewsCard = (item: NewsItem): HTMLElement => {
+  // Crea una tarjeta simple con “Ver detalle”.
   const card = document.createElement('article');
   card.className =
     'bg-gray-50 border border-gray-100 rounded-2xl p-4 flex flex-col gap-3';
 
+  // Formateo defensivo: si no parsea, mostramos el string original.
   const parsedDate = new Date(item.date);
   const formattedDate = isNaN(parsedDate.getTime())
     ? item.date
@@ -122,6 +142,7 @@ const createNewsCard = (item: NewsItem): HTMLElement => {
 
   const link = card.querySelector('a');
   if (link) {
+    // Si no hay link, queda como #.
     link.setAttribute('href', item.link || '#');
     link.setAttribute('target', '_blank');
     link.setAttribute('rel', 'noopener noreferrer');

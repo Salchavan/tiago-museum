@@ -1,3 +1,13 @@
+/**
+ * Estructura base que el formulario de reservas recolecta desde el DOM.
+ *
+ * Nota: este proyecto se despliega en GitHub Pages (sitio estático), por lo que
+ * no existe un backend real en producción. Por eso, más abajo hay 3 estrategias
+ * de “guardado”:
+ *  - API (solo funciona si hay servidor local con rutas /api)
+ *  - File System Access API (editar un JSON local elegido por el usuario)
+ *  - Descarga de a.json (fallback universal + cache en localStorage)
+ */
 type ReservationFormPayload = {
   date: string;
   time: string;
@@ -8,6 +18,10 @@ type ReservationFormPayload = {
   mail: string;
 };
 
+/**
+ * Entrada persistida (agrega un `id` incremental como string para mantener
+ * compatibilidad con los JSON existentes).
+ */
 type ReservationEntry = ReservationFormPayload & {
   id: string;
 };
@@ -21,6 +35,12 @@ type FilePickerWindow = Window & {
 
 let reservationsFileHandle: FileSystemFileHandle | null = null;
 
+/**
+ * Inicializa el formulario de reservas:
+ * - valida campos
+ * - muestra estados (info/success/error)
+ * - intenta persistir la reserva con la mejor estrategia disponible
+ */
 const initReservationForm = (): void => {
   const form = document.getElementById(
     'reservation-form'
@@ -34,6 +54,7 @@ const initReservationForm = (): void => {
   form.addEventListener('submit', async (event) => {
     event.preventDefault();
 
+    // Convertimos el FormData a un payload tipado y validado.
     const payload = buildPayload(new FormData(form));
     if (!payload) {
       setStatus(statusEl, 'Completa todos los campos obligatorios.', 'error');
@@ -43,6 +64,10 @@ const initReservationForm = (): void => {
     setStatus(statusEl, 'Enviando reserva...', 'info');
 
     try {
+      // Dependiendo del entorno/soporte del navegador puede:
+      // - guardarse vía API (solo si hay backend)
+      // - escribirse en un archivo local elegido por el usuario
+      // - descargarse como a.json actualizado
       const mode = await appendReservationToLocalJson(payload);
 
       form.reset();
@@ -117,6 +142,7 @@ const setStatus = (
   message: string,
   tone: 'info' | 'success' | 'error'
 ): void => {
+  // Tailwind classes: cambiamos solo color del texto según el estado.
   const toneClasses: Record<'info' | 'success' | 'error', string> = {
     info: 'text-gray-600',
     success: 'text-green-600',
@@ -134,6 +160,14 @@ if (document.readyState === 'loading') {
   initReservationForm();
 }
 
+/**
+ * Intenta “persistir” la reserva con distintas estrategias.
+ *
+ * Orden:
+ * 1) API (si existe un servidor local que implemente /api/reservations)
+ * 2) File System Access API (editar el JSON local seleccionado por el usuario)
+ * 3) Descarga del a.json actualizado (siempre disponible)
+ */
 const appendReservationToLocalJson = async (
   payload: ReservationFormPayload
 ): Promise<'api' | 'file' | 'download'> => {
@@ -144,6 +178,9 @@ const appendReservationToLocalJson = async (
     // ignore and try other strategies
   }
 
+  // File System Access API (Chromium): permite escribir en un archivo local
+  // elegido por el usuario (ideal para “actualizar” public/data/a.json durante
+  // desarrollo sin backend).
   const picker = (window as FilePickerWindow).showOpenFilePicker;
   if (picker) {
     const handle = await ensureReservationsFileHandle();
@@ -158,6 +195,7 @@ const appendReservationToLocalJson = async (
     return 'file';
   }
 
+  // Fallback universal: genera a.json actualizado y lo descarga.
   await appendReservationByDownload(payload);
   return 'download';
 };
@@ -165,6 +203,7 @@ const appendReservationToLocalJson = async (
 const appendReservationByApi = async (
   payload: ReservationFormPayload
 ): Promise<void> => {
+  // Endpoint pensado para un backend local (no existe en GH Pages).
   const response = await fetch('/api/reservations', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -209,6 +248,7 @@ const ensureReservationsFileHandle =
 const appendReservationByDownload = async (
   payload: ReservationFormPayload
 ): Promise<void> => {
+  // Leemos desde cache local si existe; si no, intentamos obtener data/a.json.
   const current = await readReservationsFromCacheOrFetch();
   const next: ReservationEntry = {
     id: getNextReservationId(current),
@@ -216,6 +256,9 @@ const appendReservationByDownload = async (
   };
 
   const updated = [...current, next];
+
+  // Guardamos el “estado” en localStorage para no perder reservas agregadas
+  // si el usuario no reemplaza manualmente public/data/a.json.
   localStorage.setItem('tiago-museum:reservations', JSON.stringify(updated));
   downloadJsonFile('a.json', updated);
 };
@@ -223,6 +266,7 @@ const appendReservationByDownload = async (
 const readReservationsFromCacheOrFetch = async (): Promise<
   ReservationEntry[]
 > => {
+  // Cache en localStorage: útil para simular persistencia en un sitio estático.
   const cached = localStorage.getItem('tiago-museum:reservations');
   if (cached) {
     try {
@@ -236,6 +280,8 @@ const readReservationsFromCacheOrFetch = async (): Promise<
   }
 
   try {
+    // En producción (GH Pages) el JSON debe vivir en public/data para existir
+    // dentro de dist/. Se respeta BASE_URL para project-sites.
     const response = await fetch(`${import.meta.env.BASE_URL}data/a.json`, {
       cache: 'no-store',
     });
@@ -250,6 +296,7 @@ const readReservationsFromCacheOrFetch = async (): Promise<
 };
 
 const downloadJsonFile = (fileName: string, data: unknown): void => {
+  // Genera una descarga directa en el navegador (sin servidor).
   const blob = new Blob([JSON.stringify(data, null, 2)], {
     type: 'application/json',
   });
@@ -268,6 +315,7 @@ const downloadJsonFile = (fileName: string, data: unknown): void => {
 const readReservations = async (
   handle: FileSystemFileHandle
 ): Promise<ReservationEntry[]> => {
+  // Lee y valida una lista JSON desde un FileSystemFileHandle.
   const file = await handle.getFile();
   const text = await file.text();
 
@@ -291,12 +339,14 @@ const writeReservations = async (
   handle: FileSystemFileHandle,
   reservations: ReservationEntry[]
 ): Promise<void> => {
+  // Escribe la lista completa al archivo (sobrescribe el contenido).
   const writable = await handle.createWritable();
   await writable.write(JSON.stringify(reservations, null, 2));
   await writable.close();
 };
 
 const getNextReservationId = (reservations: ReservationEntry[]): string => {
+  // IDs numéricos como string: busca el máximo para generar el siguiente.
   const lastId = reservations.reduce((max, item) => {
     const numericId = Number(item.id);
     if (Number.isFinite(numericId) && numericId > max) {

@@ -1,3 +1,11 @@
+/**
+ * Modal “Donaciones”.
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-donation-modal
+ * - Modal overlay: #donation-modal
+ * - Botón cerrar: [data-modal-close]
+ */
 const setupDonationModal = (): void => {
   const openButton = document.getElementById('open-donation-modal');
   const modal = document.getElementById('donation-modal');
@@ -9,6 +17,7 @@ const setupDonationModal = (): void => {
     return;
   }
 
+  // Abre/cierra el modal y bloquea el scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');

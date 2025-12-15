@@ -1,3 +1,14 @@
+// Slider de "Restauraciones".
+//
+// - Fuente de datos: public/data/r.json
+// - En producción (GitHub Pages) se respeta import.meta.env.BASE_URL
+// - Renderiza dos cosas:
+//   1) Cards del slider (home)
+//   2) Cards del modal "Ver todas" (si existe #restorations-modal-list)
+// - Requiere que el HTML tenga estos IDs:
+//   - slider-track, dots-container, prev-btn, next-btn
+//   - restorations-modal-list (opcional)
+
 // Interfaz para las restauraciones
 interface Restoration {
   restoration_id: number;
@@ -8,9 +19,12 @@ interface Restoration {
 }
 
 class RestorationsSlider {
+  // Estado de datos y navegación.
   private restorations: Restoration[] = [];
   private currentIndex: number = 0;
   private slidesPerView: number = 3;
+
+  // Autoplay.
   private autoSlideInterval: number | null = null;
   private autoSlideDelay: number = 5000; // 5 segundos
 
@@ -23,7 +37,7 @@ class RestorationsSlider {
   private modalListContainer: HTMLElement | null;
 
   constructor() {
-    // Inicializar elementos DOM
+    // Inicializar elementos DOM (se asume que existen en la página).
     this.sliderTrack = document.getElementById('slider-track')!;
     this.dotsContainer = document.getElementById('dots-container')!;
     this.prevBtn = document.getElementById('prev-btn')!;
@@ -38,27 +52,28 @@ class RestorationsSlider {
     }
     this.sliderViewport = viewport as HTMLElement;
 
-    // Configurar event listeners
+    // Configurar event listeners (click/hover/teclado/swipe).
     this.setupEventListeners();
 
-    // Ajustar slides por vista según el tamaño de pantalla
+    // Responsive: ajustar slides por vista según el tamaño de pantalla.
     this.updateSlidesPerView();
     window.addEventListener('resize', () => this.updateSlidesPerView());
 
-    // Cargar datos
+    // Cargar datos y renderizar.
     this.loadRestorations();
   }
 
   private async loadRestorations(): Promise<void> {
     try {
+      // BASE_URL: en DEV es '/', en GH Pages suele ser '/<repo>/'
       const response = await fetch(`${import.meta.env.BASE_URL}data/r.json`);
       this.restorations = await response.json();
 
-      // Renderizar tarjetas
+      // Renderizar tarjetas (slider + modal).
       this.renderSliderCards();
       this.renderModalCards();
 
-      // Iniciar autoplay
+      // Iniciar autoplay.
       this.startAutoSlide();
     } catch (error) {
       console.error('Error cargando las restauraciones:', error);
@@ -67,6 +82,7 @@ class RestorationsSlider {
   }
 
   private updateSlidesPerView(): void {
+    // Ajusta cuántas cards entran por "pantalla".
     const width = window.innerWidth;
     if (width < 768) {
       this.slidesPerView = 1;
@@ -75,11 +91,14 @@ class RestorationsSlider {
     } else {
       this.slidesPerView = 3;
     }
+
+    // Al cambiar el layout, se vuelve al primer grupo.
     this.currentIndex = 0;
     this.renderSliderCards();
   }
 
   private renderSliderCards(): void {
+    // Renderiza cards + dots en base al estado actual.
     this.sliderTrack.innerHTML = '';
     this.dotsContainer.innerHTML = '';
 
@@ -116,6 +135,7 @@ class RestorationsSlider {
       this.dotsContainer.appendChild(dot);
     }
 
+    // Asegurar índice válido.
     if (this.currentIndex >= totalGroups) {
       this.currentIndex = totalGroups - 1;
     }
@@ -127,6 +147,9 @@ class RestorationsSlider {
     restoration: Restoration,
     variant: 'slider' | 'modal' = 'slider'
   ): HTMLElement {
+    // Crea una card de restauración.
+    // - variant=slider: ocupa altura completa para alinearse dentro del carrusel.
+    // - variant=modal: se usa dentro del listado del modal.
     const card = document.createElement('div');
 
     card.className =
@@ -136,7 +159,7 @@ class RestorationsSlider {
       card.classList.add('h-full');
     }
 
-    // Formatear fecha
+    // Formatear fecha (solo mes + año).
     const formattedDate = new Date(restoration.date_started).toLocaleDateString(
       'es-ES',
       {
@@ -176,10 +199,10 @@ class RestorationsSlider {
       </div>
     `;
 
-    // Agregar clase para efectos de hover
+    // Agregar clase para efectos de hover.
     card.classList.add('group');
 
-    // Agregar event listener al enlace
+    // Agregar event listener al enlace.
     const link = card.querySelector('a');
     link?.addEventListener('click', (e) => {
       e.preventDefault();
@@ -190,6 +213,8 @@ class RestorationsSlider {
   }
 
   private renderModalCards(): void {
+    // Render del listado dentro del modal "Ver todas".
+    // Si el modal no existe en la página, no hace nada.
     if (!this.modalListContainer) {
       return;
     }
@@ -212,11 +237,11 @@ class RestorationsSlider {
   }
 
   private setupEventListeners(): void {
-    // Navegación
+    // Navegación (botones).
     this.prevBtn.addEventListener('click', () => this.prevSlide());
     this.nextBtn.addEventListener('click', () => this.nextSlide());
 
-    // Pausar autoplay al interactuar
+    // Pausar autoplay al interactuar (hover).
     this.sliderTrack.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.sliderTrack.addEventListener('mouseleave', () =>
       this.startAutoSlide()
@@ -224,13 +249,13 @@ class RestorationsSlider {
     this.prevBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.nextBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
 
-    // Navegación con teclado
+    // Navegación con teclado.
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft') this.prevSlide();
       if (e.key === 'ArrowRight') this.nextSlide();
     });
 
-    // Swipe para móviles
+    // Swipe para móviles.
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -247,6 +272,7 @@ class RestorationsSlider {
   }
 
   private handleSwipe(startX: number, endX: number): void {
+    // Detecta swipe horizontal y navega.
     const swipeThreshold = 50;
     const diff = startX - endX;
 
@@ -260,6 +286,7 @@ class RestorationsSlider {
   }
 
   private prevSlide(): void {
+    // Retrocede un grupo completo.
     const totalSlides = Math.ceil(
       this.restorations.length / this.slidesPerView
     );
@@ -268,6 +295,7 @@ class RestorationsSlider {
   }
 
   private nextSlide(): void {
+    // Avanza un grupo completo.
     const totalSlides = Math.ceil(
       this.restorations.length / this.slidesPerView
     );
@@ -281,12 +309,13 @@ class RestorationsSlider {
   }
 
   private updateSliderPosition(): void {
+    // Calcula el desplazamiento en px según el ancho del viewport.
     const viewportWidth = this.sliderViewport.getBoundingClientRect().width;
     const translateX = -this.currentIndex * viewportWidth;
 
     this.sliderTrack.style.transform = `translateX(${translateX}px)`;
 
-    // Actualizar puntos activos
+    // Actualizar puntos activos.
     const dots = this.dotsContainer.querySelectorAll('button');
     dots.forEach((dot, index) => {
       if (index === this.currentIndex) {
@@ -300,6 +329,7 @@ class RestorationsSlider {
   }
 
   private startAutoSlide(): void {
+    // Inicia (o reinicia) el autoplay.
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
     }
@@ -318,6 +348,7 @@ class RestorationsSlider {
   }
 
   private stopAutoSlide(): void {
+    // Detiene el autoplay.
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
       this.autoSlideInterval = null;
@@ -325,6 +356,7 @@ class RestorationsSlider {
   }
 
   private handleProjectClick(restorationId: number): void {
+    // Demo: placeholder para detalle de proyecto.
     console.log('Ver proyecto:', restorationId);
     // Aquí puedes implementar lógica para mostrar detalles del proyecto
     // Por ejemplo: abrir un modal, navegar a otra página, etc.
@@ -332,6 +364,7 @@ class RestorationsSlider {
   }
 
   private showErrorState(): void {
+    // Render fallback con botón de reintento.
     this.sliderTrack.innerHTML = `
       <div class="w-full text-center py-12">
         <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -351,7 +384,7 @@ class RestorationsSlider {
   }
 }
 
-// Inicializar cuando el DOM esté listo
+// Inicializar cuando el DOM esté listo.
 document.addEventListener('DOMContentLoaded', () => {
   new RestorationsSlider();
 });

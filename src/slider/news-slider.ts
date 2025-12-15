@@ -1,3 +1,11 @@
+// Slider de "Noticias y Eventos".
+//
+// - Fuente de datos: public/data/n.json
+// - En producción (GitHub Pages) se respeta import.meta.env.BASE_URL
+// - Requiere que el HTML tenga estos IDs:
+//   - news-slider-track, news-dots-container, news-prev-btn, news-next-btn
+
+// Estructura esperada del JSON (n.json).
 type NewsItem = {
   date: string;
   type: string;
@@ -8,12 +16,16 @@ type NewsItem = {
 };
 
 class NewsSlider {
+  // Estado de datos y navegación.
   private items: NewsItem[] = [];
   private currentIndex: number = 0;
   private slidesPerView: number = 3;
+
+  // Autoplay (se pausa con hover/touch).
   private autoSlideInterval: number | null = null;
   private autoSlideDelay: number = 5000;
 
+  // Elementos DOM del slider.
   private sliderTrack!: HTMLElement;
   private dotsContainer!: HTMLElement;
   private prevBtn!: HTMLElement;
@@ -21,6 +33,7 @@ class NewsSlider {
   private sliderViewport!: HTMLElement;
 
   constructor() {
+    // Tomar referencias del DOM.
     const sliderTrack = document.getElementById('news-slider-track');
     const dotsContainer = document.getElementById('news-dots-container');
     const prevBtn = document.getElementById('news-prev-btn');
@@ -42,16 +55,20 @@ class NewsSlider {
     }
     this.sliderViewport = viewport as HTMLElement;
 
+    // Eventos UI (click, hover, touch).
     this.setupEventListeners();
 
+    // Responsive: decide 1/2/3 cards por vista.
     this.updateSlidesPerView();
     window.addEventListener('resize', () => this.updateSlidesPerView());
 
+    // Cargar datos y renderizar.
     this.loadNews();
   }
 
   private async loadNews(): Promise<void> {
     try {
+      // BASE_URL: en DEV es '/', en GH Pages suele ser '/<repo>/'
       const response = await fetch(`${import.meta.env.BASE_URL}data/n.json`);
       if (!response.ok) {
         throw new Error('No se pudo obtener la lista de noticias');
@@ -60,13 +77,16 @@ class NewsSlider {
       const data = (await response.json()) as NewsItem[];
       this.items = Array.isArray(data) ? data : [];
 
-      // Ordenar por fecha (desc), si la fecha tiene formato MM/DD/YYYY.
+      // Ordenar por fecha (desc).
+      // - Si la fecha viene como MM/DD/YYYY se parsea manualmente.
+      // - Caso contrario, se usa Date(value) como fallback.
       this.items = [...this.items].sort((a, b) => {
         const da = this.parseMmDdYyyy(a.date)?.getTime() ?? -Infinity;
         const db = this.parseMmDdYyyy(b.date)?.getTime() ?? -Infinity;
         return db - da;
       });
 
+      // Render + autoplay.
       this.renderSliderCards();
       this.startAutoSlide();
     } catch (error) {
@@ -76,6 +96,7 @@ class NewsSlider {
   }
 
   private updateSlidesPerView(): void {
+    // Ajusta cuántas cards entran por "pantalla".
     const width = window.innerWidth;
     if (width < 768) {
       this.slidesPerView = 1;
@@ -85,11 +106,13 @@ class NewsSlider {
       this.slidesPerView = 3;
     }
 
+    // Al cambiar el layout, se vuelve al primer grupo.
     this.currentIndex = 0;
     this.renderSliderCards();
   }
 
   private renderSliderCards(): void {
+    // Renderiza cards + dots en base al estado actual.
     this.sliderTrack.innerHTML = '';
     this.dotsContainer.innerHTML = '';
 
@@ -131,6 +154,7 @@ class NewsSlider {
       this.dotsContainer.appendChild(dot);
     }
 
+    // Asegurar índice válido.
     if (this.currentIndex >= totalGroups) {
       this.currentIndex = totalGroups - 1;
     }
@@ -139,6 +163,7 @@ class NewsSlider {
   }
 
   private createNewsCard(item: NewsItem): HTMLElement {
+    // Crea una card individual (no monta listeners, solo markup).
     const card = document.createElement('article');
     card.className =
       'bg-white rounded-lg overflow-hidden shadow-lg news-card flex flex-col group h-full';
@@ -186,9 +211,11 @@ class NewsSlider {
   }
 
   private setupEventListeners(): void {
+    // Navegación (botones).
     this.prevBtn.addEventListener('click', () => this.prevSlide());
     this.nextBtn.addEventListener('click', () => this.nextSlide());
 
+    // Hover: pausa autoplay mientras el usuario interactúa.
     this.sliderTrack.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.sliderTrack.addEventListener('mouseleave', () =>
       this.startAutoSlide()
@@ -196,6 +223,7 @@ class NewsSlider {
     this.prevBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.nextBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
 
+    // Swipe (móvil).
     let touchStartX = 0;
     let touchEndX = 0;
 
@@ -212,6 +240,7 @@ class NewsSlider {
   }
 
   private handleSwipe(startX: number, endX: number): void {
+    // Detecta swipe horizontal y navega.
     const swipeThreshold = 50;
     const diff = startX - endX;
 
@@ -225,6 +254,7 @@ class NewsSlider {
   }
 
   private prevSlide(): void {
+    // Retrocede un grupo completo.
     const totalSlides = Math.ceil(this.items.length / this.slidesPerView);
     if (totalSlides <= 1) {
       return;
@@ -234,6 +264,7 @@ class NewsSlider {
   }
 
   private nextSlide(): void {
+    // Avanza un grupo completo.
     const totalSlides = Math.ceil(this.items.length / this.slidesPerView);
     if (totalSlides <= 1) {
       return;
@@ -248,11 +279,13 @@ class NewsSlider {
   }
 
   private updateSliderPosition(): void {
+    // Calcula el desplazamiento en px según el ancho del viewport.
     const viewportWidth = this.sliderViewport.getBoundingClientRect().width;
     const translateX = -this.currentIndex * viewportWidth;
 
     this.sliderTrack.style.transform = `translateX(${translateX}px)`;
 
+    // Actualizar dots activos.
     const dots = this.dotsContainer.querySelectorAll('button');
     dots.forEach((dot, index) => {
       if (index === this.currentIndex) {
@@ -266,6 +299,7 @@ class NewsSlider {
   }
 
   private startAutoSlide(): void {
+    // Inicia (o reinicia) el autoplay.
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
     }
@@ -281,6 +315,7 @@ class NewsSlider {
   }
 
   private stopAutoSlide(): void {
+    // Detiene el autoplay.
     if (this.autoSlideInterval) {
       clearInterval(this.autoSlideInterval);
       this.autoSlideInterval = null;
@@ -288,6 +323,7 @@ class NewsSlider {
   }
 
   private showErrorState(): void {
+    // Render fallback con botón de reintento.
     this.sliderTrack.innerHTML = `
       <div class="w-full text-center py-12">
         <svg class="w-16 h-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -307,6 +343,8 @@ class NewsSlider {
   }
 
   private parseMmDdYyyy(value: string): Date | null {
+    // Parser robusto para MM/DD/YYYY.
+    // Si no matchea, intenta Date(value) como fallback.
     const match = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/.exec(value.trim());
     if (!match) {
       const fallback = new Date(value);
@@ -331,6 +369,7 @@ class NewsSlider {
   }
 
   private escapeHtml(value: string): string {
+    // Previene inyección/HTML inesperado al interpolar strings en innerHTML.
     return value
       .replaceAll('&', '&amp;')
       .replaceAll('<', '&lt;')
@@ -340,6 +379,7 @@ class NewsSlider {
   }
 }
 
+// Inicializar cuando el DOM esté listo.
 document.addEventListener('DOMContentLoaded', () => {
   new NewsSlider();
 });

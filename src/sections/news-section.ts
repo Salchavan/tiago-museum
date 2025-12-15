@@ -1,3 +1,8 @@
+/**
+ * Estructura de una noticia consumida por la sección.
+ *
+ * Se carga desde public/data/n.json (en build queda como dist/data/n.json).
+ */
 type NewsItem = {
   date: string;
   type: string;
@@ -7,6 +12,12 @@ type NewsItem = {
   link: string;
 };
 
+/**
+ * Sección “Noticias” (home): busca el contenedor y lo llena con tarjetas.
+ *
+ * Requisito en el HTML:
+ * - Contenedor: #news-cards
+ */
 const setupNewsSection = (): void => {
   const container = document.getElementById('news-cards');
   if (!container) {
@@ -17,6 +28,7 @@ const setupNewsSection = (): void => {
 };
 
 const loadNewsCards = async (container: HTMLElement): Promise<void> => {
+  // Estado de carga.
   container.innerHTML = `
     <div class="text-gray-500 text-sm col-span-full">
       Cargando noticias...
@@ -24,6 +36,7 @@ const loadNewsCards = async (container: HTMLElement): Promise<void> => {
   `;
 
   try {
+    // Respeta BASE_URL para GitHub Pages (project-site).
     const response = await fetch(`${import.meta.env.BASE_URL}data/n.json`);
     if (!response.ok) {
       throw new Error('No se pudo obtener la lista de noticias');
@@ -31,6 +44,7 @@ const loadNewsCards = async (container: HTMLElement): Promise<void> => {
 
     const items = (await response.json()) as NewsItem[];
 
+    // Estado vacío.
     if (!Array.isArray(items) || items.length === 0) {
       container.innerHTML = `
         <div class="text-gray-500 text-sm col-span-full text-center py-8">
@@ -40,12 +54,14 @@ const loadNewsCards = async (container: HTMLElement): Promise<void> => {
       return;
     }
 
+    // Orden descendente por fecha (más nuevo primero).
     const sorted = [...items].sort((a, b) => {
       const da = parseMmDdYyyy(a.date)?.getTime() ?? -Infinity;
       const db = parseMmDdYyyy(b.date)?.getTime() ?? -Infinity;
       return db - da;
     });
 
+    // Solo mostramos las 3 noticias más recientes en esta sección.
     const topThree = sorted.slice(0, 3);
 
     container.innerHTML = '';
@@ -56,6 +72,7 @@ const loadNewsCards = async (container: HTMLElement): Promise<void> => {
     container.appendChild(fragment);
   } catch (error) {
     console.error('Error al cargar noticias de la sección:', error);
+    // Estado de error.
     container.innerHTML = `
       <div class="text-red-600 text-sm col-span-full text-center py-8">
         No se pudieron cargar las noticias.
@@ -65,6 +82,7 @@ const loadNewsCards = async (container: HTMLElement): Promise<void> => {
 };
 
 const createNewsCard = (item: NewsItem): HTMLElement => {
+  // Construimos el DOM con createElement para evitar interpolación HTML.
   const card = document.createElement('article');
   card.className = 'bg-white rounded-lg overflow-hidden shadow-lg news-card';
 
@@ -101,6 +119,7 @@ const createNewsCard = (item: NewsItem): HTMLElement => {
   const link = document.createElement('a');
   link.className = 'gold-text font-semibold hover:underline';
   link.textContent = 'Saber mas';
+  // Fallback defensivo por si el JSON no incluye link.
   link.href = item.link || '#';
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
@@ -117,6 +136,9 @@ const createNewsCard = (item: NewsItem): HTMLElement => {
 };
 
 function parseMmDdYyyy(value: string): Date | null {
+  // Parseo tolerante:
+  // - preferimos MM/DD/YYYY (formato de los JSON actuales)
+  // - si no matchea, probamos Date(value) como fallback
   const match = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/.exec(value.trim());
   if (!match) {
     const fallback = new Date(value);

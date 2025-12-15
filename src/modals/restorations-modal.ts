@@ -1,3 +1,11 @@
+/**
+ * Modal “Ver restauraciones” (listado extendido).
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-restorations-modal
+ * - Modal overlay: #restorations-modal
+ * - Botón cerrar: [data-modal-close]
+ */
 const setupRestorationsModal = (): void => {
   const openButton = document.getElementById('open-restorations-modal');
   const modal = document.getElementById('restorations-modal');
@@ -9,6 +17,7 @@ const setupRestorationsModal = (): void => {
     return;
   }
 
+  // Abre/cierra el modal y bloquea el scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');

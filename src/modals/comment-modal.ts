@@ -1,3 +1,16 @@
+/**
+ * Modal “Dejar comentario”.
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-comment-modal
+ * - Modal overlay: #comment-modal
+ * - Botón cerrar: [data-modal-close]
+ * - Form: #comment-form
+ * - Estado/errores: #comment-status
+ *
+ * Importante: actualmente no persiste nada (no escribe JSON ni llama a API).
+ * Solo valida, muestra mensaje y cierra.
+ */
 const setupCommentModal = (): void => {
   const openButton = document.getElementById('open-comment-modal');
   const modal = document.getElementById('comment-modal');
@@ -12,6 +25,7 @@ const setupCommentModal = (): void => {
     return;
   }
 
+  // Muestra/oculta el texto de estado (validación).
   const setStatus = (message: string | null): void => {
     if (!statusEl) {
       return;
@@ -27,6 +41,7 @@ const setupCommentModal = (): void => {
     statusEl.classList.remove('hidden');
   };
 
+  // Abre/cierra el modal y bloquea scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');
@@ -58,6 +73,7 @@ const setupCommentModal = (): void => {
   form?.addEventListener('submit', (event) => {
     event.preventDefault();
 
+    // Usamos la validación nativa del navegador (required, etc.).
     if (!form.checkValidity()) {
       setStatus('Completa todos los campos para enviar el comentario.');
       return;
@@ -69,6 +85,7 @@ const setupCommentModal = (): void => {
   });
 
   form?.addEventListener('input', () => {
+    // Cuando el usuario corrige los campos, ocultamos el error.
     setStatus(null);
   });
 };

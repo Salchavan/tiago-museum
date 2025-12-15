@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  Página pública del museo.
+  - Proyecto multi-page con Vite (ver vite.config.js)
+  - Tailwind se bundlea desde src/main.ts (no se linkea CSS desde /src en HTML)
+  - Los datos (JSON) se sirven desde /public/data y en producción bajo BASE_URL
+-->
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -15,11 +21,11 @@
     />
   </head>
   <body class="bg-white">
-    <!-- Header / Hero Section -->
+    <!-- Header / Hero Section (portada + navegación) -->
     <header
       class="bg-[linear-gradient(rgba(0,0,0,0.70),rgba(0,0,0,0.70)),url('./img/header-bg.jpg')] bg-cover bg-center bg-no-repeat text-white min-h-screen flex flex-col shadow-[0px_14px_56px_10px_rgba(0,_0,_0,_0.53)]"
     >
-      <!-- Navigation -->
+      <!-- Navigation (anchors a secciones) -->
       <nav class="py-6 px-4 md:px-12 flex justify-between items-center">
         <div class="text-xl font-bold playfair-display">
           Museo Torres Cespedes
@@ -135,7 +141,7 @@
       </div>
     </section>
 
-    <!-- Ubication -->
+    <!-- Ubicación (Google Maps embed) -->
     <section id="ubication" class="px-4 md:px-12 my-[5rem]">
       <div class="max-w-6xl mx-auto text-center">
         <h2
@@ -164,7 +170,7 @@
       </div>
     </section>
 
-    <!-- Reservations -->
+    <!-- Reservas (abre modal de reserva) -->
     <section id="reservation" class="px-4 md:px-12 my-[5rem]">
       <div class="max-w-6xl mx-auto">
         <div
@@ -192,7 +198,7 @@
       </div>
     </section>
 
-    <!-- Restorations Section -->
+    <!-- Restauraciones (slider + modal "Ver todas") -->
     <section id="restorations" class="px-4 md:px-12 my-[5rem] section-bg">
       <div class="max-w-6xl mx-auto">
         <h2
@@ -201,7 +207,7 @@
           Restauraciones
         </h2>
 
-        <!-- Slider Container -->
+        <!-- Slider Container (cards dinámicas desde /data/r.json) -->
         <div class="relative">
           <!-- Slider Track -->
           <div class="overflow-hidden">
@@ -272,7 +278,7 @@
       </div>
     </section>
 
-    <!-- Our News Section -->
+    <!-- Noticias y Eventos (slider + modal "Ver todas") -->
     <section id="news" class="px-4 md:px-12 my-[5rem] section-bg">
       <div class="max-w-6xl mx-auto">
         <h2
@@ -281,7 +287,7 @@
           Noticias y Eventos
         </h2>
 
-        <!-- Slider Container -->
+        <!-- Slider Container (cards dinámicas desde /data/n.json) -->
         <div class="relative mb-16">
           <!-- Slider Track -->
           <div class="overflow-hidden">
@@ -352,7 +358,7 @@
       </div>
     </section>
 
-    <!-- Comments -->
+    <!-- Comentarios (grid dinámico desde /data/c.json + modal para agregar) -->
     <section id="comments" class="px-4 md:px-12 my-[5rem] section-bg">
       <div class="max-w-6xl mx-auto">
         <h2
@@ -379,7 +385,7 @@
       </div>
     </section>
 
-    <!--  Donation CTA -->
+    <!-- Donación (abre modal de donación) -->
     <section id="donate" class="px-4 md:px-12 my-[5rem]">
       <div class="max-w-6xl mx-auto">
         <!-- Make Donation CTA -->
@@ -581,7 +587,7 @@
       </div>
     </footer>
 
-    <!-- Back to Top Button -->
+    <!-- Back to Top Button (controlado por src/main.ts) -->
     <button
       id="backToTop"
       class="fixed bottom-8 right-8 bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition duration-300 hidden"
@@ -589,7 +595,7 @@
       <i class="fas fa-chevron-up"></i>
     </button>
 
-    <!-- Reservation Modal -->
+    <!-- Reservation Modal (form: src/forms/reservation-form.ts) -->
     <div
       id="reservation-modal"
       class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
@@ -727,7 +733,7 @@
       </div>
     </div>
 
-    <!-- Restorations Modal -->
+    <!-- Restorations Modal (lista: src/modals/restorations-modal.ts) -->
     <div
       id="restorations-modal"
       class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
@@ -759,7 +765,7 @@
       </div>
     </div>
 
-    <!-- News Modal -->
+    <!-- News Modal (lista: src/modals/news-modal.ts) -->
     <div
       id="news-modal"
       class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
@@ -792,7 +798,7 @@
       </div>
     </div>
 
-    <!-- Donation Modal -->
+    <!-- Donation Modal (UI demo; no integra pagos reales) -->
     <div
       id="donation-modal"
       class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
@@ -891,7 +897,7 @@
       </div>
     </div>
 
-    <!-- Comment Modal -->
+    <!-- Comment Modal (validación + status: src/modals/comment-modal.ts) -->
     <div
       id="comment-modal"
       class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
@@ -963,6 +969,10 @@
       </div>
     </div>
 
+    <!--
+      Entrypoints Vite (type="module").
+      Importante: mantenerlos como módulos para que Vite bundlee Tailwind y TS.
+    -->
     <script type="module" src="/src/main.ts"></script>
     <script type="module" src="/src/modals/reservation-modal.ts"></script>
     <script type="module" src="/src/modals/restorations-modal.ts"></script>

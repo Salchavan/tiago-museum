@@ -1,3 +1,9 @@
+/**
+ * Estructura mínima para renderizar una “reserva” en el calendario.
+ *
+ * Importante: este modal actualmente usa datos fake para demo.
+ * No está conectado a `data/a.json` ni a un backend.
+ */
 type FakeReservation = {
   date: string; // YYYY-MM-DD
   time: string;
@@ -5,6 +11,16 @@ type FakeReservation = {
   cuantity: number;
 };
 
+/**
+ * Modal “Calendario de reservas” (panel admin).
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-calendar-reservations-modal
+ * - Modal overlay: #calendar-reservations-modal
+ * - Botón cerrar: [data-modal-close]
+ * - Título: #calendar-title
+ * - Grid: #calendar-grid
+ */
 const setupCalendarReservationsModal = (): void => {
   const openButton = document.getElementById(
     'open-calendar-reservations-modal'
@@ -27,6 +43,7 @@ const setupCalendarReservationsModal = (): void => {
     return;
   }
 
+  // Abre/cierra el modal; al abrir renderiza el calendario del mes actual.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');
@@ -60,6 +77,7 @@ function renderCalendar(
   titleEl: HTMLParagraphElement | null,
   gridEl: HTMLDivElement
 ): void {
+  // Renderiza una grilla (Lun..Dom) del mes de `date`.
   const year = date.getFullYear();
   const month = date.getMonth(); // 0-11
 
@@ -80,6 +98,7 @@ function renderCalendar(
   const startOffset = (firstDay.getDay() + 6) % 7;
   const totalCells = Math.ceil((startOffset + daysInMonth) / 7) * 7;
 
+  // Agrupamos por fecha ISO para buscar reservas por día.
   const reservationsByDate = groupReservationsByDate(reservations);
 
   const weekdayLabels = ['Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb', 'Dom'];
@@ -146,6 +165,7 @@ function renderCalendar(
 }
 
 function getFakeReservations(): FakeReservation[] {
+  // Genera ejemplos relativos a “hoy” para que el calendario siempre tenga datos.
   const today = new Date();
   const base = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
@@ -178,6 +198,7 @@ function getFakeReservations(): FakeReservation[] {
 function groupReservationsByDate(
   items: FakeReservation[]
 ): Map<string, FakeReservation[]> {
+  // Agrupa por item.date y ordena cada día por hora.
   const map = new Map<string, FakeReservation[]>();
 
   for (const item of items) {
@@ -199,6 +220,7 @@ function groupReservationsByDate(
 }
 
 function toIsoDate(year: number, monthIndex: number, day: number): string {
+  // Helpers de formateo (YYYY-MM-DD).
   const y = String(year);
   const m = String(monthIndex + 1).padStart(2, '0');
   const d = String(day).padStart(2, '0');
@@ -213,6 +235,7 @@ function capitalizeFirstLetter(value: string): string {
 }
 
 function escapeHtml(value: string): string {
+  // Evita inyección de HTML al interpolar strings en templates.
   return value
     .replaceAll('&', '&amp;')
     .replaceAll('<', '&lt;')

@@ -1,3 +1,8 @@
+/**
+ * Estructura esperada para los comentarios.
+ *
+ * Se carga desde public/data/c.json (en build queda como dist/data/c.json).
+ */
 type CommentItem = {
   date: string;
   perfilicon: string;
@@ -5,6 +10,12 @@ type CommentItem = {
   text: string;
 };
 
+/**
+ * Sección “Comentarios”: toma un contenedor existente y lo llena con tarjetas.
+ *
+ * Requisito en el HTML:
+ * - Contenedor grid: #comments-cards
+ */
 const setupCommentsSection = (): void => {
   const container = document.getElementById('comments-cards');
   if (!container) {
@@ -15,6 +26,7 @@ const setupCommentsSection = (): void => {
 };
 
 const loadCommentsCards = async (container: HTMLElement): Promise<void> => {
+  // Estado de carga.
   container.innerHTML = `
     <div class="text-gray-500 text-sm col-span-full">
       Cargando comentarios...
@@ -22,6 +34,7 @@ const loadCommentsCards = async (container: HTMLElement): Promise<void> => {
   `;
 
   try {
+    // Respeta BASE_URL para GitHub Pages (project-site).
     const response = await fetch(`${import.meta.env.BASE_URL}data/c.json`);
     if (!response.ok) {
       throw new Error('No se pudo obtener la lista de comentarios');
@@ -29,6 +42,7 @@ const loadCommentsCards = async (container: HTMLElement): Promise<void> => {
 
     const items = (await response.json()) as CommentItem[];
 
+    // Estado vacío.
     if (!Array.isArray(items) || items.length === 0) {
       container.innerHTML = `
         <div class="text-gray-500 text-sm col-span-full text-center py-8">
@@ -38,6 +52,7 @@ const loadCommentsCards = async (container: HTMLElement): Promise<void> => {
       return;
     }
 
+    // Orden descendente por fecha (más nuevo primero).
     const sorted = [...items].sort((a, b) => {
       const da = parseMmDdYyyy(a.date)?.getTime() ?? -Infinity;
       const db = parseMmDdYyyy(b.date)?.getTime() ?? -Infinity;
@@ -52,6 +67,7 @@ const loadCommentsCards = async (container: HTMLElement): Promise<void> => {
     container.appendChild(fragment);
   } catch (error) {
     console.error('Error al cargar comentarios de la sección:', error);
+    // Estado de error.
     container.innerHTML = `
       <div class="text-red-600 text-sm col-span-full text-center py-8">
         No se pudieron cargar los comentarios.
@@ -61,6 +77,7 @@ const loadCommentsCards = async (container: HTMLElement): Promise<void> => {
 };
 
 const createCommentCard = (item: CommentItem): HTMLElement => {
+  // Construimos el DOM con createElement para evitar HTML string largo.
   const card = document.createElement('article');
   card.className = 'bg-white rounded-lg overflow-hidden shadow-lg news-card';
 
@@ -104,6 +121,9 @@ const createCommentCard = (item: CommentItem): HTMLElement => {
 };
 
 function parseMmDdYyyy(value: string): Date | null {
+  // Parseo tolerante:
+  // - preferimos MM/DD/YYYY (formato de los JSON actuales)
+  // - si no matchea, probamos Date(value) como fallback
   const match = /^([0-9]{2})\/([0-9]{2})\/([0-9]{4})$/.exec(value.trim());
   if (!match) {
     const fallback = new Date(value);

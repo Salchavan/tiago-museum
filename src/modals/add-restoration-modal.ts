@@ -1,3 +1,16 @@
+/**
+ * Modal de “Agregar restauración” (panel admin).
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-add-restoration-modal
+ * - Modal overlay: #add-restoration-modal
+ * - Botón cerrar: [data-modal-close]
+ * - Formulario: #add-restoration-form
+ * - Estado/feedback: #add-restoration-status
+ *
+ * Nota: el POST a /api/restorations requiere backend local. En GH Pages esto
+ * mostrará error y es esperado.
+ */
 const setupAddRestorationModal = (): void => {
   const openButton = document.getElementById('open-add-restoration-modal');
   const modal = document.getElementById('add-restoration-modal');
@@ -13,6 +26,7 @@ const setupAddRestorationModal = (): void => {
     '#add-restoration-status'
   ) as HTMLParagraphElement | null;
 
+  // Mensajes de estado dentro del modal (error/success/info con colores Tailwind).
   const setStatus = (message: string, kind: 'error' | 'success' | 'info') => {
     if (!statusEl) {
       return;
@@ -34,6 +48,7 @@ const setupAddRestorationModal = (): void => {
     }
   };
 
+  // Abre/cierra el modal; también bloquea el scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');
@@ -71,6 +86,7 @@ const setupAddRestorationModal = (): void => {
       'button[type="submit"]'
     ) as HTMLButtonElement | null;
 
+    // Leemos y validamos datos del formulario.
     const formData = new FormData(form);
     const title = String(formData.get('title') ?? '').trim();
     const description = String(formData.get('description') ?? '').trim();
@@ -82,6 +98,7 @@ const setupAddRestorationModal = (): void => {
       return;
     }
 
+    // Normalizamos fecha si viene de <input type="date"> (YYYY-MM-DD).
     const date_started = normalizeDateStarted(dateStartedInput);
 
     try {
@@ -92,6 +109,7 @@ const setupAddRestorationModal = (): void => {
 
       setStatus('Guardando...', 'info');
 
+      // Requiere backend (modo dev). En GH Pages fallará y se mostrará mensaje.
       const response = await fetch('/api/restorations', {
         method: 'POST',
         headers: {
@@ -121,6 +139,7 @@ const setupAddRestorationModal = (): void => {
       setStatus('Restauración guardada.', 'success');
       form.reset();
       toggleModal(false);
+      // Simplificación: recarga para refrescar listados/slider.
       window.location.reload();
     } catch (error) {
       console.error('Error al guardar la restauración:', error);

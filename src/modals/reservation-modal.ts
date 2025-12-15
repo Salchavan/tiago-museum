@@ -1,3 +1,11 @@
+/**
+ * Modal “Reservar visita”.
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-reservation-modal
+ * - Modal overlay: #reservation-modal
+ * - Botón cerrar: [data-modal-close]
+ */
 const setupReservationModal = (): void => {
   const openButton = document.getElementById('open-reservation-modal');
   const modal = document.getElementById('reservation-modal');
@@ -9,6 +17,7 @@ const setupReservationModal = (): void => {
     return;
   }
 
+  // Abre/cierra el modal y bloquea el scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');

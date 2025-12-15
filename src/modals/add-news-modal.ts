@@ -1,3 +1,16 @@
+/**
+ * Modal de “Agregar noticia” (panel admin).
+ *
+ * Requisitos en el HTML:
+ * - Botón: #open-add-news-modal
+ * - Modal overlay: #add-news-modal
+ * - Botón cerrar: [data-modal-close]
+ * - Formulario: #add-news-form
+ * - Estado/feedback: #add-news-status
+ *
+ * Nota: el POST a /api/news requiere backend local. En GitHub Pages esto
+ * mostrará error y es esperado.
+ */
 const setupAddNewsModal = (): void => {
   const openButton = document.getElementById('open-add-news-modal');
   const modal = document.getElementById('add-news-modal');
@@ -13,6 +26,7 @@ const setupAddNewsModal = (): void => {
     '#add-news-status'
   ) as HTMLParagraphElement | null;
 
+  // Mensajes de estado dentro del modal (error/success/info con colores Tailwind).
   const setStatus = (message: string, kind: 'error' | 'success' | 'info') => {
     if (!statusEl) {
       return;
@@ -34,6 +48,7 @@ const setupAddNewsModal = (): void => {
     }
   };
 
+  // Abre/cierra el modal; también bloquea el scroll del body.
   const toggleModal = (show: boolean): void => {
     if (show) {
       modal.classList.remove('hidden');
@@ -69,6 +84,7 @@ const setupAddNewsModal = (): void => {
       'button[type="submit"]'
     ) as HTMLButtonElement | null;
 
+    // Leemos y validamos datos del formulario.
     const formData = new FormData(form);
     const type = String(formData.get('type') ?? '').trim();
     const title = String(formData.get('title') ?? '').trim();
@@ -82,6 +98,7 @@ const setupAddNewsModal = (): void => {
       return;
     }
 
+    // Normalizamos fecha si viene de <input type="date"> (YYYY-MM-DD).
     const date = normalizeDate(dateInput);
 
     try {
@@ -92,6 +109,7 @@ const setupAddNewsModal = (): void => {
 
       setStatus('Guardando...', 'info');
 
+      // Requiere backend (modo dev). En GH Pages fallará y se mostrará mensaje.
       const response = await fetch('/api/news', {
         method: 'POST',
         headers: {
@@ -123,6 +141,7 @@ const setupAddNewsModal = (): void => {
       setStatus('Noticia guardada.', 'success');
       form.reset();
       toggleModal(false);
+      // Simplificación: recarga para refrescar listados/slider.
       window.location.reload();
     } catch (error) {
       console.error('Error al guardar la noticia:', error);

@@ -1,4 +1,10 @@
 <!DOCTYPE html>
+<!--
+  Login (demo) del proyecto.
+  - Esta pantalla existe como entry HTML separado para que Vite la incluya en el build (multi-page).
+  - La lógica está en src/login.ts (importa Tailwind y redirige al panel admin).
+  - En GitHub Pages, las rutas se construyen con BASE_URL (ver src/login.ts y vite.config.js).
+-->
 <html lang="es">
   <head>
     <meta charset="UTF-8" />
@@ -14,6 +20,7 @@
     />
   </head>
   <body class="bg-white">
+    <!-- Contenedor principal + formulario de login (demo) -->
     <main
       class="min-h-screen flex items-center justify-center px-4 bg-[linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url('./img/header-bg.jpg')] bg-cover bg-center"
     >
@@ -69,6 +76,7 @@
       </div>
     </main>
 
+    <!-- Entrypoint Vite (type="module"): bundlea TS + Tailwind y maneja el submit -->
     <script type="module" src="/src/login.ts"></script>
   </body>
 </html>

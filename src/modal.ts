@@ -1,3 +1,14 @@
+// Modal genérico (demo) construido con Tailwind CSS.
+//
+// Nota: este archivo define un modal "genérico" (no el sistema de modales del museo).
+// Requiere que el HTML tenga los siguientes IDs (si alguno falta, fallará por los "!" del constructor):
+// - modal-overlay, modal-content, modal-title, modal-body
+// - modal-close, cancel-btn, confirm-btn, modal-form
+
+// Opciones de configuración para abrir/actualizar el modal.
+// - `content`: si se provee, se inserta como HTML y se oculta el formulario por defecto.
+// - `type`: afecta el estilo del botón confirm.
+// - `onConfirm`: callback opcional; si el form está visible se envía FormData.
 interface ModalOptions {
   title?: string;
   content?: string;
@@ -12,6 +23,7 @@ interface ModalOptions {
 }
 
 class Modal {
+  // Referencias a nodos del DOM.
   private overlay: HTMLElement;
   private modalContent: HTMLElement;
   private titleElement: HTMLElement;
@@ -21,11 +33,13 @@ class Modal {
   private confirmButton: HTMLElement;
   private form: HTMLFormElement;
 
+  // Bandera para bloquear interacciones mientras corre una animación.
   private isAnimating: boolean = false;
+  // Últimas opciones usadas para poder ejecutar callbacks (cancel/confirm).
   private currentOptions?: ModalOptions;
 
   constructor() {
-    // Inicializar elementos
+    // Inicializar elementos (se asume que existen en el HTML).
     this.overlay = document.getElementById('modal-overlay')!;
     this.modalContent = document.getElementById('modal-content')!;
     this.titleElement = document.getElementById('modal-title')!;
@@ -35,31 +49,32 @@ class Modal {
     this.confirmButton = document.getElementById('confirm-btn')!;
     this.form = document.getElementById('modal-form') as HTMLFormElement;
 
-    // Configurar event listeners
+    // Configurar event listeners (open/close/confirm/cancel).
     this.setupEventListeners();
+    // Botones demo adicionales para abrir distintos tipos de modal.
     this.setupCustomButtons();
   }
 
   private setupEventListeners(): void {
-    // Botón para abrir el modal básico
+    // Botón para abrir el modal básico (si existe en el HTML).
     const openButton = document.getElementById('open-modal');
     openButton?.addEventListener('click', () => {
       this.open();
     });
 
-    // Cerrar modal con el botón X
+    // Cerrar modal con el botón X.
     this.closeButton.addEventListener('click', () => {
       this.close();
     });
 
-    // Cerrar modal al hacer clic fuera
+    // Cerrar modal al hacer clic fuera (solo si no está animando).
     this.overlay.addEventListener('click', (event: MouseEvent) => {
       if (event.target === this.overlay && !this.isAnimating) {
         this.close();
       }
     });
 
-    // Botón cancelar
+    // Botón cancelar (ejecuta callback opcional + cierra).
     this.cancelButton.addEventListener('click', () => {
       if (this.currentOptions?.onCancel) {
         this.currentOptions.onCancel();
@@ -67,12 +82,12 @@ class Modal {
       this.close();
     });
 
-    // Botón confirmar
+    // Botón confirmar (ejecuta callback opcional y luego cierra).
     this.confirmButton.addEventListener('click', () => {
       this.handleConfirm();
     });
 
-    // Cerrar con Escape
+    // Cerrar con Escape.
     document.addEventListener('keydown', (event: KeyboardEvent) => {
       if (event.key === 'Escape' && this.isOpen() && !this.isAnimating) {
         this.close();
@@ -81,6 +96,9 @@ class Modal {
   }
 
   private setupCustomButtons(): void {
+    // Botones de DEMO para abrir el modal con distintas configuraciones.
+    // (Solo funcionan si esos botones existen en el HTML.)
+
     // Modal personalizado
     const customBtn = document.getElementById('open-custom-modal');
     customBtn?.addEventListener('click', () => {
@@ -186,26 +204,27 @@ class Modal {
   public async open(options?: ModalOptions): Promise<void> {
     if (this.isAnimating) return;
 
+    // Guardar las opciones actuales para callbacks y para configurar el UI.
     this.currentOptions = options;
     this.isAnimating = true;
 
-    // Configurar el modal
+    // Configurar el modal (título, contenido, botones y estilos).
     this.configure(options);
 
-    // Mostrar overlay
+    // Mostrar overlay.
     this.overlay.classList.remove('hidden');
 
-    // Pequeña pausa para que el navegador procese el cambio
+    // Pequeña pausa para que el navegador procese el cambio.
     await new Promise((resolve) => setTimeout(resolve, 10));
 
-    // Animar entrada
+    // Animar entrada.
     this.overlay.classList.add('opacity-0');
 
     requestAnimationFrame(() => {
       this.overlay.classList.remove('opacity-0');
       this.overlay.classList.add('opacity-100');
 
-      // Resetear animación del contenido
+      // Resetear animación del contenido.
       this.modalContent.classList.remove('modal-enter', 'modal-exit');
       void this.modalContent.offsetWidth; // Trigger reflow
       this.modalContent.classList.add('modal-enter');
@@ -213,7 +232,7 @@ class Modal {
       this.isAnimating = false;
     });
 
-    // Deshabilitar scroll del body
+    // Deshabilitar scroll del body mientras el modal está abierto.
     document.body.style.overflow = 'hidden';
   }
 
@@ -222,42 +241,44 @@ class Modal {
 
     this.isAnimating = true;
 
-    // Animar salida
+    // Animar salida.
     this.modalContent.classList.remove('modal-enter');
     this.modalContent.classList.add('modal-exit');
 
     this.overlay.classList.remove('opacity-100');
     this.overlay.classList.add('opacity-0');
 
-    // Esperar a que termine la animación
+    // Esperar a que termine la animación.
     await new Promise((resolve) => setTimeout(resolve, 300));
 
-    // Ocultar completamente
+    // Ocultar completamente.
     this.overlay.classList.add('hidden');
     this.overlay.classList.remove('opacity-0', 'opacity-100');
     this.modalContent.classList.remove('modal-exit');
 
     this.isAnimating = false;
 
-    // Restaurar scroll del body
+    // Restaurar scroll del body.
     document.body.style.overflow = '';
 
-    // Resetear formulario
+    // Resetear formulario.
     this.form.reset();
   }
 
   private configure(options?: ModalOptions): void {
+    // Si no hay opciones, vuelve al contenido/estilos por defecto.
     if (!options) {
       this.resetToDefault();
       return;
     }
 
-    // Título
+    // Título.
     if (options.title) {
       this.titleElement.textContent = options.title;
     }
 
-    // Contenido
+    // Contenido.
+    // Si `content` viene definido, se inyecta HTML y se oculta el formulario default.
     if (options.content) {
       this.bodyElement.innerHTML = options.content;
       this.form.style.display = 'none';
@@ -266,7 +287,7 @@ class Modal {
       this.form.style.display = 'block';
     }
 
-    // Textos de botones
+    // Textos de botones.
     if (options.cancelText) {
       this.cancelButton.textContent = options.cancelText;
     }
@@ -275,14 +296,14 @@ class Modal {
       this.confirmButton.textContent = options.confirmText;
     }
 
-    // Mostrar/ocultar botón cancelar
+    // Mostrar/ocultar botón cancelar.
     if (options.showCancel === false) {
       this.cancelButton.classList.add('hidden');
     } else {
       this.cancelButton.classList.remove('hidden');
     }
 
-    // Estilo según tipo
+    // Estilo según tipo.
     this.applyTypeStyles(options.type);
   }
 
@@ -297,6 +318,8 @@ class Modal {
   }
 
   private resetBody(): void {
+    // Contenido por defecto cuando no se pasa `options.content`.
+    // Incluye un form simple para demostrar el envío de FormData.
     this.bodyElement.innerHTML = `
             <p class="text-gray-600 mb-4">
                 Este es un modal moderno creado con Tailwind CSS. Puedes personalizar completamente su contenido y comportamiento.
@@ -337,12 +360,12 @@ class Modal {
             </form>
         `;
 
-    // Reasignar el formulario
+    // Reasignar el formulario porque se recreó el HTML.
     this.form = document.getElementById('modal-form') as HTMLFormElement;
   }
 
   private applyTypeStyles(type: string = 'default'): void {
-    // Remover estilos anteriores
+    // Remover estilos anteriores del botón confirm.
     this.confirmButton.classList.remove(
       'bg-blue-600',
       'hover:bg-blue-700',
@@ -354,7 +377,7 @@ class Modal {
       'hover:bg-red-700'
     );
 
-    // Aplicar nuevos estilos según tipo
+    // Aplicar nuevos estilos según tipo.
     switch (type) {
       case 'success':
         this.confirmButton.classList.add('bg-green-600', 'hover:bg-green-700');
@@ -372,7 +395,7 @@ class Modal {
 
   private handleConfirm(): void {
     if (this.currentOptions?.onConfirm) {
-      // Recoger datos del formulario si está visible
+      // Si el form está visible, se envía FormData; si no, solo se confirma.
       if (this.form.style.display !== 'none') {
         const formData = new FormData(this.form);
         this.currentOptions.onConfirm(formData);
@@ -380,7 +403,7 @@ class Modal {
         this.currentOptions.onConfirm();
       }
     } else {
-      // Comportamiento por defecto
+      // Comportamiento por defecto (demo): valida un email mínimo.
       const emailInput = document.getElementById('email') as HTMLInputElement;
       if (emailInput && emailInput.value.trim() === '') {
         alert('Por favor ingresa un correo electrónico');
@@ -416,6 +439,6 @@ class Modal {
 document.addEventListener('DOMContentLoaded', () => {
   const modal = new Modal();
 
-  // Exponer la instancia globalmente para uso externo
+  // Exponer la instancia globalmente para uso externo (demo).
   (window as any).modal = modal;
 });
