@@ -1,0 +1,68 @@
+@import 'tailwindcss';
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #333;
+}
+
+.playfair-display {
+  font-family: 'Playfair Display', serif;
+}
+
+.bg-header {
+  background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+    url('./src/img/header-bg.jpg');
+  background-size: cover;
+  background-position: center;
+}
+
+.gold-text {
+  color: #d4af37;
+}
+
+.gold-border {
+  border-color: #d4af37;
+}
+
+.html {
+  background-color: #f9f9f9;
+}
+
+.news-card {
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+}
+
+/* MODAL */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOut {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+.modal-enter {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.modal-exit {
+  animation: fadeOut 0.3s ease-in;
+}

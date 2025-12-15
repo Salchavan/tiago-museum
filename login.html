@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login | Museo Torres Cespedes</title>
+    <link rel="stylesheet" href="./src/tailwindcss.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body class="bg-white">
+    <main
+      class="min-h-screen flex items-center justify-center px-4 bg-[linear-gradient(rgba(0,0,0,0.75),rgba(0,0,0,0.75)),url('./img/header-bg.jpg')] bg-cover bg-center"
+    >
+      <div class="w-full max-w-md bg-white rounded-2xl shadow-2xl p-8">
+        <div class="mb-6">
+          <h1 class="text-3xl font-bold playfair-display">Ingresar</h1>
+          <p class="text-gray-600 mt-2 text-sm">
+            Login sencillo (demo). Al enviar, te redirige al panel admin.
+          </p>
+        </div>
+
+        <form id="login-form" class="grid gap-4" novalidate>
+          <label
+            class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+          >
+            Usuario
+            <input
+              type="text"
+              name="user"
+              autocomplete="username"
+              class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+              required
+            />
+          </label>
+
+          <label
+            class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+          >
+            Contraseña
+            <input
+              type="password"
+              name="password"
+              autocomplete="current-password"
+              class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+              required
+            />
+          </label>
+
+          <button
+            type="submit"
+            class="bg-black text-white rounded-lg px-6 py-3 hover:bg-gray-800 transition duration-300"
+          >
+            Entrar
+          </button>
+
+          <a
+            href="./index.html"
+            class="text-sm text-gray-600 hover:text-black transition text-center"
+          >
+            Volver al sitio
+          </a>
+        </form>
+      </div>
+    </main>
+
+    <script type="module">
+      const form = document.getElementById('login-form');
+
+      form?.addEventListener('submit', (event) => {
+        event.preventDefault();
+        window.location.href = './index-admin.html';
+      });
+    </script>
+  </body>
+</html>

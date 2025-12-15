@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Museo Torre Cespedes</title>
+    <!-- <script src='https://cdn.tailwindcss.com'></script> -->
+    <link rel="stylesheet" href="./src/tailwindcss.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style></style>
+  </head>
+  <body class="bg-white">
+    <!-- Header / Hero Section -->
+    <header
+      class="bg-[linear-gradient(rgba(0,0,0,0.70),rgba(0,0,0,0.70)),url('./img/header-bg.jpg')] bg-cover bg-center bg-no-repeat text-white min-h-screen flex flex-col shadow-[0px_14px_56px_10px_rgba(0,_0,_0,_0.53)]"
+    >
+      <!-- Navigation -->
+      <nav class="py-6 px-4 md:px-12 flex justify-between items-center">
+        <div class="text-xl font-bold playfair-display">
+          Museo Torres Cespedes
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#about" class="hover:gold-text transition duration-300"
+            >Sobre Nosotros</a
+          >
+          <a href="#reservation" class="hover:gold-text transition duration-300"
+            >Reservar</a
+          >
+          <a
+            href="#restorations"
+            class="hover:gold-text transition duration-300"
+            >Restauraciones</a
+          >
+          <a
+            href="#news"
+            class="hover:gold-text items-center transition duration-300"
+            >Eventos</a
+          >
+          <a href="#comments" class="hover:gold-text transition duration-300"
+            >Comentarios</a
+          >
+          <a
+            href="#donate"
+            class="bg-transparent border-2 border-white hover:bg-white hover:text-black px-6 py-2 transition duration-300 gold-border"
+          >
+            Hacer Donación
+          </a>
+        </div>
+        <button class="md:hidden text-2xl">
+          <i class="fas fa-bars"></i>
+        </button>
+      </nav>
+
+      <!-- Hero Content -->
+      <div
+        class="flex-grow flex flex-col justify-center items-center px-4 text-center"
+      >
+        <h1 class="text-5xl md:text-7xl font-bold playfair-display mb-6">
+          El Museo Torres Cespedes
+        </h1>
+        <h2 class="text-3xl md:text-4xl playfair-display gold-text mb-8">
+          en Jesús María
+        </h2>
+        <p class="max-w-3xl text-lg md:text-xl mb-12 leading-relaxed">
+          Es una joya arquitectónica ubicada en el parque del actual Club Social
+          Jesús María. A simple vista, su aspecto de pequeño castillo y sus
+          detalles de inspiración árabe cautivan.
+        </p>
+        <div class="flex flex-wrap justify-center gap-6">
+          <a
+            href="#about"
+            class="bg-transparent border-2 border-white hover:bg-white hover:text-black px-8 py-3 text-lg transition duration-300"
+          >
+            Saber mas
+          </a>
+          <a
+            href="#donate"
+            class="bg-transparent border-2 border-white hover:bg-white hover:text-black px-8 py-3 text-lg transition duration-300 gold-border"
+          >
+            Donar 💖
+          </a>
+        </div>
+      </div>
+
+      <!-- Scroll indicator -->
+      <div class="py-8 flex justify-center">
+        <a href="#about" class="text-white animate-bounce">
+          <i class="fas fa-chevron-down text-2xl"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- About Us Section -->
+    <section id="about" class="px-4 md:px-12 my-[5rem]">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-4xl md:text-5xl font-bold playfair-display text-center mb-16"
+        >
+          Sobre Nosotros
+        </h2>
+        <div class="grid md:grid-cols-2 gap-12 items-center">
+          <div>
+            <p class="text-lg mb-6">
+              Es una joya arquitectónica ubicada en el parque del actual Club
+              Social Jesús María. A simple vista, su aspecto de pequeño castillo
+              y sus detalles de inspiración árabe cautivan. Cada ángulo de su
+              fachada ofrece una nueva perspectiva, pensada para ser admirada
+              desde todos los puntos.
+            </p>
+            <p class="text-lg mb-6">
+              Céspedes imaginó este lugar como un sitio de encuentro familiar,
+              pensado para el disfrute, el ocio y la desconexión.
+            </p>
+            <p class="text-lg mb-6">
+              Inspirada en las torres de homenaje francesas, la Torre Céspedes
+              adopta una estética europea con influencias medievales. En España,
+              este tipo de construcciones evolucionaron hacia espacios
+              recreativos conocidos como casinos o torres de placer. Lejos de su
+              origen militar, Céspedes reinterpretó el concepto para crear un
+              entorno lúdico y sofisticado
+            </p>
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <img src="./src/img/a1.jpg" class="h-64 w-full object-cover" />
+            <img src="./src/img/a2.jpg" class="h-64 w-full mt-8 object-cover" />
+            <img src="./src/img/a3.jpg" class="h-64 w-full object-cover" />
+            <img src="./src/img/a4.jpg" class="h-64 w-full mt-8 object-cover" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Ubication -->
+    <section id="ubication" class="px-4 md:px-12 my-[5rem]">
+      <div class="max-w-6xl mx-auto text-center">
+        <h2
+          class="text-4xl md:text-5xl font-bold playfair-display text-center mb-6"
+        >
+          Ubicación
+        </h2>
+        <p class="text-lg text-gray-600 mb-12 max-w-3xl mx-auto">
+          Visita la Torre Céspedes y déjate envolver por su historia. Estamos en
+          el corazón de Jesús María, rodeados de jardines y vida cultural.
+        </p>
+        <div class="flex flex-col items-center gap-8">
+          <div class="w-full max-w-[1000px] h-[500px]">
+            <iframe
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3420.7327695024296!2d-64.0968189!3d-30.977938799999997!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x943263832d2966c1%3A0xde4540b19b8cb7ac!2sTorre%20Cespedes!5e0!3m2!1ses-419!2sar!4v1765650306024!5m2!1ses-419!2sar"
+              width="1000"
+              height="500"
+              style="border: 0"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+              class="w-full h-full rounded-xl shadow-2xl"
+            ></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Reservations -->
+    <section id="reservation" class="px-4 md:px-12 my-[5rem]">
+      <div class="max-w-6xl mx-auto">
+        <div
+          class="mt-20 p-8 md:p-12 bg-gradient-to-r from-gray-900 to-black text-white rounded-xl"
+        >
+          <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold playfair-display mb-6">
+              Hacer una reservacion
+            </h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">
+              Reserva tu visita al Museo Torres Céspedes y sumérgete en la
+              historia y la cultura de Jesús María. Nuestro equipo está listo
+              para brindarte una experiencia inolvidable.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+              <button
+                id="open-reservation-modal"
+                class="bg-transparent border-2 border-white hover:bg-white hover:text-black px-8 py-3 text-lg transition duration-300"
+              >
+                Reservar Ahora
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Restorations Section -->
+    <section id="restorations" class="px-4 md:px-12 my-[5rem] section-bg">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-4xl md:text-5xl font-bold playfair-display text-center mb-16"
+        >
+          Restauraciones
+        </h2>
+
+        <!-- Slider Container -->
+        <div class="relative">
+          <!-- Slider Track -->
+          <div class="overflow-hidden">
+            <div
+              id="slider-track"
+              class="flex gap-4 md:gap-6 py-4 px-2 transition-transform duration-500 ease-in-out"
+            >
+              <!-- Las cartas se generarán dinámicamente aquí -->
+            </div>
+          </div>
+
+          <!-- Controles + indicadores (abajo) -->
+          <div class="flex items-center justify-center gap-4 mt-2">
+            <button
+              id="prev-btn"
+              class="bg-white/80 hover:bg-white border border-gray-200 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+              aria-label="Anterior"
+            >
+              <svg
+                class="w-5 h-5 md:w-6 md:h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <div id="dots-container" class="flex justify-center space-x-2">
+              <!-- Los puntos se generarán dinámicamente -->
+            </div>
+
+            <button
+              id="next-btn"
+              class="bg-white/80 hover:bg-white border border-gray-200 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+              aria-label="Siguiente"
+            >
+              <svg
+                class="w-5 h-5 md:w-6 md:h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center mt-12">
+          <button
+            id="open-restorations-modal"
+            class="border-2 border-black hover:bg-black hover:text-white text-lg transition duration-300 px-8 py-3"
+          >
+            Ver todas las restauraciones
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Our News Section -->
+    <section id="news" class="px-4 md:px-12 my-[5rem] section-bg">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-4xl md:text-5xl font-bold playfair-display text-center mb-16"
+        >
+          Noticias y Eventos
+        </h2>
+
+        <!-- Slider Container -->
+        <div class="relative mb-16">
+          <!-- Slider Track -->
+          <div class="overflow-hidden">
+            <div
+              id="news-slider-track"
+              class="flex gap-4 md:gap-6 py-4 px-2 transition-transform duration-500 ease-in-out"
+            >
+              <!-- Las cartas se generarán dinámicamente aquí -->
+            </div>
+          </div>
+
+          <!-- Controles + indicadores (abajo) -->
+          <div class="flex items-center justify-center gap-4 mt-2">
+            <button
+              id="news-prev-btn"
+              class="bg-white/80 hover:bg-white border border-gray-200 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+              aria-label="Anterior"
+            >
+              <svg
+                class="w-5 h-5 md:w-6 md:h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M15 19l-7-7 7-7"
+                />
+              </svg>
+            </button>
+
+            <div id="news-dots-container" class="flex justify-center space-x-2">
+              <!-- Los puntos se generarán dinámicamente -->
+            </div>
+
+            <button
+              id="news-next-btn"
+              class="bg-white/80 hover:bg-white border border-gray-200 rounded-full w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shadow-lg transition-all hover:scale-110 hover:shadow-xl"
+              aria-label="Siguiente"
+            >
+              <svg
+                class="w-5 h-5 md:w-6 md:h-6 text-gray-700"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M9 5l7 7-7 7"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <div class="text-center">
+          <button
+            id="open-news-modal"
+            class="border-2 border-black hover:bg-black hover:text-white px-8 py-3 text-lg transition duration-300"
+          >
+            Ver todas las noticias
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Comments -->
+    <section id="comments" class="px-4 md:px-12 my-[5rem] section-bg">
+      <div class="max-w-6xl mx-auto">
+        <h2
+          class="text-4xl md:text-5xl font-bold playfair-display text-center mb-16"
+        >
+          Comentarios
+        </h2>
+        <div class="relative">
+          <button
+            id="open-comment-modal"
+            type="button"
+            class="absolute top-3 right-5 md:translate-x-20 lg:translate-x-24 w-10 md:w-12 h-96 md:h-[25rem] border-2 border-black bg-white hover:bg-black hover:text-white transition duration-300 flex items-center justify-center"
+            aria-label="Agregar comentario"
+          >
+            <span class="text-2xl leading-none font-semibold">+</span>
+          </button>
+
+          <div id="comments-cards" class="grid md:grid-cols-3 gap-8 mb-16">
+            <div class="text-gray-500 text-sm col-span-full">
+              Cargando comentarios...
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!--  Donation CTA -->
+    <section id="donate" class="px-4 md:px-12 my-[5rem]">
+      <div class="max-w-6xl mx-auto">
+        <!-- Make Donation CTA -->
+        <div
+          class="mt-20 p-8 md:p-12 bg-gradient-to-r from-gray-900 to-black text-white rounded-xl"
+        >
+          <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-4xl font-bold playfair-display mb-6">
+              Hacer una donacion
+            </h2>
+            <p class="text-xl mb-8 max-w-3xl mx-auto">
+              Tu donacion ayuda a preservar y restaurar el patrimonio artistico
+              y cultural del museo de las Torres Cespedes. Cada contribucion,
+              grande o pequena, hace una diferencia significativa en nuestros
+              esfuerzos continuos por proteger esta obra maestra para las
+              generaciones futuras.
+            </p>
+            <div class="flex flex-wrap justify-center gap-4">
+              <button
+                id="open-donation-modal"
+                class="border-2 gold-border hover:bg-white hover:text-black text-lg transition duration-300 px-8 py-3 gold-border"
+              >
+                Donar ahora 💖
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-black text-white py-12 px-4 md:px-12">
+      <div class="max-w-6xl mx-auto">
+        <div class="grid md:grid-cols-4 gap-8">
+          <!-- Column 1 -->
+          <div>
+            <h3 class="text-2xl font-bold playfair-display mb-6">
+              Museo Torres Cespedes
+            </h3>
+            <p class="text-gray-400 mb-6">
+              Preservando el patrimonio artistico y cultural del museo de las
+              <strong>Torres Cespedes</strong> a traves de la restauracion y la
+              educacion.
+            </p>
+            <div class="flex space-x-4">
+              <a
+                href="#"
+                class="text-white hover:gold-text transition duration-300"
+              >
+                <i class="fab fa-facebook-f text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-white hover:gold-text transition duration-300"
+              >
+                <i class="fab fa-twitter text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-white hover:gold-text transition duration-300"
+              >
+                <i class="fab fa-instagram text-xl"></i>
+              </a>
+              <a
+                href="#"
+                class="text-white hover:gold-text transition duration-300"
+              >
+                <i class="fab fa-youtube text-xl"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- Column 2 -->
+          <div>
+            <h4 class="text-xl font-bold mb-6 gold-text">Links</h4>
+            <ul class="space-y-3">
+              <li>
+                <a
+                  href="#about"
+                  class="hover:text-white transition duration-300 text-gray-400"
+                  >Sobre Nosotros</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#reservation"
+                  class="hover:text-white transition duration-300 text-gray-400"
+                  >Reservar</a
+                >
+              </li>
+              <!-- <li>
+                <a
+                  href='#join'
+                  class='hover:text-white transition duration-300 text-gray-400'
+                  >Membership</a
+                >
+              </li> -->
+              <li>
+                <a
+                  href="#news"
+                  class="hover:text-white transition duration-300 text-gray-400"
+                  >Noticias y Eventos</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#comments"
+                  class="hover:text-white transition duration-300 text-gray-400"
+                  >Comentarios</a
+                >
+              </li>
+              <li>
+                <a
+                  href="#donate"
+                  class="hover:text-white transition duration-300 text-gray-400"
+                  >Donar</a
+                >
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 3 -->
+          <div>
+            <h4 class="text-xl font-bold mb-6 gold-text">Contáctanos</h4>
+            <ul class="space-y-3 text-gray-400">
+              <li class="flex items-start">
+                <i class="fas fa-map-marker-alt gold-text mr-3 mt-1"></i>
+                <a
+                  href="https://maps.app.goo.gl/JNa1jaZx781NzX2P9"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Castulo Peña 387, X5220 Jesus María, Córdoba</a
+                >
+                <button class="">
+                  <i
+                    class="fa-solid fa-copy m-2 hover:text-white transition duration-300"
+                  ></i>
+                </button>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-phone gold-text mr-3"></i>
+                <span>03525 44-3773</span>
+                <button class="">
+                  <i
+                    class="fa-solid fa-copy m-2 hover:text-white transition duration-300"
+                  ></i>
+                </button>
+              </li>
+              <li class="flex items-center">
+                <i class="fas fa-envelope gold-text mr-3"></i>
+                <span>turismo@jesusmaria.gov.ar</span>
+                <button class="">
+                  <i
+                    class="fa-solid fa-copy m-2 hover:text-white transition duration-300"
+                  ></i>
+                </button>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Column 4 -->
+          <div>
+            <h4 class="text-xl font-bold mb-6 gold-text">
+              Mantente Actualizado
+            </h4>
+            <p class="text-gray-400 mb-4">
+              Suscribete a nuestro boletin para recibir las ultimas noticias y
+              actualizaciones.
+            </p>
+            <div class="flex">
+              <input
+                type="email"
+                placeholder="Tu correo electrónico"
+                class="bg-gray-800 text-white px-4 py-3 flex-grow rounded-l"
+              />
+              <button
+                class="bg-green-600 hover:bg-green-700 px-4 py-3 rounded-r transition duration-300"
+              >
+                <i class="fas fa-paper-plane"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="border-t border-gray-800 mt-12 pt-8 text-center text-gray-500"
+        >
+          <p>
+            © 2025 Thiago Arias. Todos los derechos reservados.
+            <a href="#" class="hover:text-white transition duration-300"
+              >Politica de Privacidad</a
+            >
+            |
+            <a href="#" class="hover:text-white transition duration-300"
+              >Términos de Uso</a
+            >
+          </p>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Back to Top Button -->
+    <button
+      id="backToTop"
+      class="fixed bottom-8 right-8 bg-black text-white p-3 rounded-full shadow-lg hover:bg-gray-800 transition duration-300 hidden"
+    >
+      <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Reservation Modal -->
+    <div
+      id="reservation-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
+      data-modal-overlay
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl h-[80vh] w-[80vw] p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold playfair-display">
+              Reserva tu visita
+            </h3>
+            <button
+              class="text-gray-500 hover:text-black transition"
+              data-modal-close
+              aria-label="Cerrar modal de reservación"
+            >
+              <i class="fas fa-close"></i>
+            </button>
+          </div>
+          <div class="flex flex-row gap-5">
+            <div class="w-[50%]">
+              <p class="text-gray-600 mb-6">
+                Completa tu reserva y asegura un recorrido guiado exclusivo por
+                la Torre Céspedes. Nuestro equipo confirmará tu visita por
+                correo electrónico.
+              </p>
+              <div class="space-y-3 text-left text-gray-700">
+                <p class="font-semibold">Incluye:</p>
+                <ul class="list-disc list-inside text-sm text-gray-600">
+                  <li>Acceso prioritario</li>
+                  <li>Guía especializado</li>
+                  <li>Material audiovisual</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <form
+                id="reservation-form"
+                class="grid md:grid-cols-2 gap-4"
+                novalidate
+              >
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  Fecha
+                  <input
+                    type="date"
+                    name="date"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  Hora
+                  <input
+                    type="time"
+                    name="time"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  DNI
+                  <input
+                    type="text"
+                    name="dni"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  A nombre de
+                  <input
+                    type="text"
+                    name="name"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  Número de teléfono
+                  <input
+                    type="tel"
+                    name="tel"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  Email
+                  <input
+                    type="email"
+                    name="mail"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2 md:col-span-2"
+                >
+                  Cantidad de personas
+                  <input
+                    type="number"
+                    min="1"
+                    name="cuantity"
+                    class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                    required
+                  />
+                </label>
+                <button
+                  type="submit"
+                  class="md:col-span-2 bg-black text-white rounded-lg px-6 py-3 hover:bg-gray-800 transition duration-300"
+                >
+                  Enviar reserva
+                </button>
+                <p
+                  id="reservation-status"
+                  class="md:col-span-2 text-sm text-center text-gray-600"
+                  aria-live="polite"
+                ></p>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restorations Modal -->
+    <div
+      id="restorations-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
+      data-modal-overlay
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl h-[80vh] w-[80vw] p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold playfair-display">
+              Proyectos de restauración
+            </h3>
+            <button
+              class="text-gray-500 hover:text-black transition"
+              data-modal-close
+              aria-label="Cerrar modal de restauraciones"
+            >
+              ✕
+            </button>
+          </div>
+          <div
+            id="restorations-modal-list"
+            class="grid gap-6 md:grid-cols-2 lg:grid-cols-3 max-h-[60vh] overflow-y-auto pr-2"
+          >
+            <div class="text-gray-500 text-sm col-span-full">
+              Cargando restauraciones...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- News Modal -->
+    <div
+      id="news-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
+      data-modal-overlay
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-2xl w-full p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold playfair-display">
+              Noticias y eventos
+            </h3>
+            <button
+              class="text-gray-500 hover:text-black transition"
+              data-modal-close
+              aria-label="Cerrar modal de noticias"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div
+            id="news-modal-list"
+            class="grid gap-6 md:grid-cols-2 max-h-[60vh] overflow-y-auto pr-2"
+          >
+            <div class="text-gray-500 text-sm col-span-full">
+              Cargando noticias...
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Donation Modal -->
+    <div
+      id="donation-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
+      data-modal-overlay
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div
+          class="bg-white rounded-2xl shadow-2xl h-[80vh] w-[80vw] p-8 text-center"
+        >
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold playfair-display">Donaciones</h3>
+            <button
+              class="text-gray-500 hover:text-black transition"
+              data-modal-close
+              aria-label="Cerrar modal de donaciones"
+            >
+              ✕
+            </button>
+          </div>
+
+          <div
+            class="max-w-2xl mx-auto text-left flex flex-row gap-8 justify-center items-center"
+          >
+            <div class="bg-gray-50 border border-gray-200 rounded-2xl p-5">
+              <div class="grid md:grid-cols-2 gap-4">
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2 md:col-span-2"
+                >
+                  Número de tarjeta
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-number"
+                    placeholder="1234 5678 9012 3456"
+                    class="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-black"
+                  />
+                </label>
+
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2 md:col-span-2"
+                >
+                  Nombre en la tarjeta
+                  <input
+                    type="text"
+                    autocomplete="cc-name"
+                    placeholder="Nombre y apellido"
+                    class="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-black"
+                  />
+                </label>
+
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  Vencimiento
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-exp"
+                    placeholder="MM/AA"
+                    class="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-black"
+                  />
+                </label>
+
+                <label
+                  class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+                >
+                  CVC
+                  <input
+                    type="text"
+                    inputmode="numeric"
+                    autocomplete="cc-csc"
+                    placeholder="123"
+                    class="border border-gray-300 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-black"
+                  />
+                </label>
+              </div>
+
+              <div class="mt-5 border-t border-gray-200 pt-4">
+                <p
+                  class="text-xs font-semibold text-gray-500 uppercase tracking-wide"
+                >
+                  Alias Mercado Pago
+                </p>
+                <p class="text-sm font-semibold text-gray-800">
+                  museo.torres.cespedes
+                </p>
+              </div>
+            </div>
+            <button
+              class="w-60 h-60 bg-green-600 p-3 rounded-lg flex justify-center items-center mx-auto mt-8 cursor-pointer hover:bg-green-700 transition duration-300 font-bold text-white"
+            >
+              Donar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment Modal -->
+    <div
+      id="comment-modal"
+      class="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 hidden"
+      data-modal-overlay
+    >
+      <div class="flex min-h-full items-center justify-center p-4">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full p-8">
+          <div class="flex items-center justify-between mb-6">
+            <h3 class="text-2xl font-bold playfair-display">
+              Dejar un comentario
+            </h3>
+            <button
+              class="text-gray-500 hover:text-black transition"
+              data-modal-close
+              aria-label="Cerrar modal de comentarios"
+            >
+              ✕
+            </button>
+          </div>
+
+          <form id="comment-form" class="grid gap-4" novalidate>
+            <label
+              class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+            >
+              Nombre
+              <input
+                type="text"
+                name="name"
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              />
+            </label>
+
+            <label
+              class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+            >
+              Número de orden
+              <input
+                type="number"
+                name="order"
+                min="1"
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              />
+            </label>
+
+            <label
+              class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
+            >
+              Comentario
+              <textarea
+                name="text"
+                rows="4"
+                class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-black"
+                required
+              ></textarea>
+            </label>
+
+            <button
+              type="submit"
+              class="bg-black text-white rounded-lg px-6 py-3 hover:bg-gray-800 transition duration-300"
+            >
+              Enviar comentario
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/modals/reservation-modal.ts"></script>
+    <script type="module" src="/src/modals/restorations-modal.ts"></script>
+    <script type="module" src="/src/modals/news-modal.ts"></script>
+    <script type="module" src="/src/modals/donation-modal.ts"></script>
+    <script type="module" src="/src/modals/comment-modal.ts"></script>
+    <script type="module" src="/src/sections/comments-section.ts"></script>
+    <script type="module" src="/src/forms/reservation-form.ts"></script>
+    <script src="./src/slider/restorations-slider.ts"></script>
+    <script src="./src/slider/news-slider.ts"></script>
+  </body>
+</html>

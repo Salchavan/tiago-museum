@@ -1,0 +1,37 @@
+[
+  {
+    "restoration_id": 1,
+    "title": "Tintero de plata",
+    "description": "Limpieza superficial y estabilización del metal. Se documenta el estado inicial, se retira suciedad acumulada y se aplica protección para frenar la oxidación.",
+    "image": "https://picsum.photos/seed/restauracion-tintero/900/600",
+    "date_started": "01/15/2024"
+  },
+  {
+    "restoration_id": 2,
+    "title": "Marco dorado (salón principal)",
+    "description": "Consolidación de capas de dorado y reposición de pequeñas pérdidas. Se realiza limpieza controlada y protección final para evitar desprendimientos.",
+    "image": "https://picsum.photos/seed/restauracion-marco/900/600",
+    "date_started": "03/10/2024"
+  },
+  {
+    "restoration_id": 3,
+    "title": "Libro de registros históricos",
+    "description": "Tratamiento de papel: limpieza mecánica, reparación de desgarros y estabilización del lomo. Se prepara guarda protectora para su conservación.",
+    "image": "https://picsum.photos/seed/restauracion-libro/900/600",
+    "date_started": "06/02/2024"
+  },
+  {
+    "restoration_id": 4,
+    "title": "Lámpara antigua de hierro",
+    "description": "Desarme parcial, eliminación de óxido y repaso de anclajes. Se controla el cableado (sin energizar) y se deja lista para exhibición segura.",
+    "image": "https://picsum.photos/seed/restauracion-lampara/900/600",
+    "date_started": "09/18/2024"
+  },
+  {
+    "restoration_id": 5,
+    "title": "Vitrina de madera (exhibición)",
+    "description": "Reparación de juntas, limpieza y tratamiento preventivo contra xilófagos. Se ajustan puertas y se reemplazan burletes para mejorar el sellado.",
+    "image": "https://picsum.photos/seed/restauracion-vitrina/900/600",
+    "date_started": "11/05/2024"
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "date": "11/29/2025",
+    "type": "Eventos",
+    "title": "Noche de museo: recorrido guiado + música en vivo",
+    "description": "Una visita especial nocturna por la Torre Céspedes, con estaciones temáticas y cierre musical en el parque. Cupos limitados, reserva previa.",
+    "image": "https://picsum.photos/seed/torre-nocturna/900/600",
+    "link": "https://museo.example.com/eventos/noche-de-museo"
+  },
+  {
+    "date": "12/03/2025",
+    "type": "Talleres",
+    "title": "Taller familiar: mini-restauradores por un día",
+    "description": "Actividad para niñas y niños (8+): materiales, limpieza y cuidado de piezas (simulación educativa) junto al equipo del museo.",
+    "image": "https://picsum.photos/seed/taller-restauracion/900/600",
+    "link": "https://museo.example.com/talleres/mini-restauradores"
+  },
+  {
+    "date": "12/07/2025",
+    "type": "Noticias",
+    "title": "Avanza la restauración del “Tintero de plata”",
+    "description": "El equipo de conservación completó la etapa de diagnóstico y comenzó la limpieza controlada. Próximamente compartiremos el antes y después.",
+    "image": "https://picsum.photos/seed/tintero-plata/900/600",
+    "link": "https://museo.example.com/noticias/restauracion-tintero"
+  },
+  {
+    "date": "12/10/2025",
+    "type": "Eventos",
+    "title": "Visita guiada para escuelas: historia y arquitectura",
+    "description": "Jornada pensada para instituciones educativas: recorrido adaptado por niveles, material didáctico y espacio de preguntas.",
+    "image": "https://picsum.photos/seed/visita-escuelas/900/600",
+    "link": "https://museo.example.com/eventos/visita-escuelas"
+  },
+  {
+    "date": "12/14/2025",
+    "type": "Noticias",
+    "title": "Nuevos horarios de verano para visitas",
+    "description": "Durante la temporada de verano ampliamos horarios de fin de semana. Recomendamos reservar con anticipación para recorridos guiados.",
+    "image": "https://picsum.photos/seed/horarios-verano/900/600",
+    "link": "https://museo.example.com/noticias/horarios-verano"
+  }
+]
