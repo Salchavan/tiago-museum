@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ADMIN - Museo Torre Cespedes</title>
     <!-- <script src='https://cdn.tailwindcss.com'></script> -->
-    <link rel="stylesheet" href="./src/tailwindcss.css" />
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -14,7 +13,7 @@
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap"
       rel="stylesheet"
     />
-    <style></style>
+    <link rel="icon" type="image/png" href="./img/favicon.ico" />
   </head>
   <body class="bg-white">
     <!-- Floating Toolbar (Left) -->
@@ -1182,6 +1181,8 @@
             </button>
           </div>
 
+          <p id="comment-status" class="text-sm text-red-600 mb-4 hidden"></p>
+
           <form id="comment-form" class="grid gap-4" novalidate>
             <label
               class="text-sm font-semibold text-gray-600 flex flex-col gap-2"
@@ -1245,7 +1246,7 @@
     ></script>
     <script type="module" src="/src/sections/comments-section.ts"></script>
     <script type="module" src="/src/forms/reservation-form.ts"></script>
-    <script src="./src/slider/restorations-slider.ts"></script>
-    <script src="./src/slider/news-slider.ts"></script>
+    <script type="module" src="/src/slider/restorations-slider.ts"></script>
+    <script type="module" src="/src/slider/news-slider.ts"></script>
   </body>
 </html>

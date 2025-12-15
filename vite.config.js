@@ -6,125 +6,138 @@ import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const reservationsFile = path.resolve(__dirname, 'src/data/a.json');
-const restorationsFile = path.resolve(__dirname, 'src/data/r.json');
-const newsFile = path.resolve(__dirname, 'src/data/n.json');
+const reservationsFile = path.resolve(__dirname, 'public/data/a.json');
+const restorationsFile = path.resolve(__dirname, 'public/data/r.json');
+const newsFile = path.resolve(__dirname, 'public/data/n.json');
 
-export default defineConfig({
-  plugins: [tailwindcss()],
-  server: {
-    configureServer(server) {
-      server.middlewares.use('/api/reservations', async (req, res, next) => {
-        if (req.method !== 'POST') {
-          next();
-          return;
-        }
-
-        try {
-          const body = await getRequestBody(req);
-          const validation = validateReservationPayload(body);
-
-          if (!validation.valid) {
-            sendJson(res, 400, {
-              success: false,
-              message: validation.message,
-            });
-            return;
-          }
-
-          const reservations = await readReservations();
-          const newReservation = {
-            id: getNextReservationId(reservations),
-            ...validation.data,
-          };
-
-          reservations.push(newReservation);
-          await writeReservations(reservations);
-
-          sendJson(res, 201, { success: true, reservation: newReservation });
-        } catch (error) {
-          console.error('Error al guardar la reserva:', error);
-          sendJson(res, 500, {
-            success: false,
-            message: 'No se pudo guardar la reserva',
-          });
-        }
-      });
-
-      server.middlewares.use('/api/restorations', async (req, res, next) => {
-        if (req.method !== 'POST') {
-          next();
-          return;
-        }
-
-        try {
-          const body = await getRequestBody(req);
-          const validation = validateRestorationPayload(body);
-
-          if (!validation.valid) {
-            sendJson(res, 400, {
-              success: false,
-              message: validation.message,
-            });
-            return;
-          }
-
-          const restorations = await readJsonArray(restorationsFile);
-          const newRestoration = {
-            restoration_id: getNextNumericId(restorations, 'restoration_id'),
-            ...validation.data,
-          };
-
-          restorations.push(newRestoration);
-          await writeJsonArray(restorationsFile, restorations);
-
-          sendJson(res, 201, { success: true, restoration: newRestoration });
-        } catch (error) {
-          console.error('Error al guardar la restauración:', error);
-          sendJson(res, 500, {
-            success: false,
-            message: 'No se pudo guardar la restauración',
-          });
-        }
-      });
-
-      server.middlewares.use('/api/news', async (req, res, next) => {
-        if (req.method !== 'POST') {
-          next();
-          return;
-        }
-
-        try {
-          const body = await getRequestBody(req);
-          const validation = validateNewsPayload(body);
-
-          if (!validation.valid) {
-            sendJson(res, 400, {
-              success: false,
-              message: validation.message,
-            });
-            return;
-          }
-
-          const newsItems = await readJsonArray(newsFile);
-          const newItem = {
-            ...validation.data,
-          };
-
-          newsItems.push(newItem);
-          await writeJsonArray(newsFile, newsItems);
-
-          sendJson(res, 201, { success: true, news: newItem });
-        } catch (error) {
-          console.error('Error al guardar la noticia:', error);
-          sendJson(res, 500, {
-            success: false,
-            message: 'No se pudo guardar la noticia',
-          });
-        }
-      });
+export default defineConfig(({ mode }) => {
+  return {
+    // GitHub Pages (project site) sirve bajo /<repo>/
+    base: mode === 'production' ? '/tiago-museum/' : '/',
+    plugins: [tailwindcss()],
+    build: {
+      rollupOptions: {
+        input: {
+          index: path.resolve(__dirname, 'index.html'),
+          admin: path.resolve(__dirname, 'index-admin.html'),
+          login: path.resolve(__dirname, 'login.html'),
+        },
+      },
     },
-  },
+    server: {
+      configureServer(server) {
+        server.middlewares.use('/api/reservations', async (req, res, next) => {
+          if (req.method !== 'POST') {
+            next();
+            return;
+          }
+
+          try {
+            const body = await getRequestBody(req);
+            const validation = validateReservationPayload(body);
+
+            if (!validation.valid) {
+              sendJson(res, 400, {
+                success: false,
+                message: validation.message,
+              });
+              return;
+            }
+
+            const reservations = await readReservations();
+            const newReservation = {
+              id: getNextReservationId(reservations),
+              ...validation.data,
+            };
+
+            reservations.push(newReservation);
+            await writeReservations(reservations);
+
+            sendJson(res, 201, { success: true, reservation: newReservation });
+          } catch (error) {
+            console.error('Error al guardar la reserva:', error);
+            sendJson(res, 500, {
+              success: false,
+              message: 'No se pudo guardar la reserva',
+            });
+          }
+        });
+
+        server.middlewares.use('/api/restorations', async (req, res, next) => {
+          if (req.method !== 'POST') {
+            next();
+            return;
+          }
+
+          try {
+            const body = await getRequestBody(req);
+            const validation = validateRestorationPayload(body);
+
+            if (!validation.valid) {
+              sendJson(res, 400, {
+                success: false,
+                message: validation.message,
+              });
+              return;
+            }
+
+            const restorations = await readJsonArray(restorationsFile);
+            const newRestoration = {
+              restoration_id: getNextNumericId(restorations, 'restoration_id'),
+              ...validation.data,
+            };
+
+            restorations.push(newRestoration);
+            await writeJsonArray(restorationsFile, restorations);
+
+            sendJson(res, 201, { success: true, restoration: newRestoration });
+          } catch (error) {
+            console.error('Error al guardar la restauración:', error);
+            sendJson(res, 500, {
+              success: false,
+              message: 'No se pudo guardar la restauración',
+            });
+          }
+        });
+
+        server.middlewares.use('/api/news', async (req, res, next) => {
+          if (req.method !== 'POST') {
+            next();
+            return;
+          }
+
+          try {
+            const body = await getRequestBody(req);
+            const validation = validateNewsPayload(body);
+
+            if (!validation.valid) {
+              sendJson(res, 400, {
+                success: false,
+                message: validation.message,
+              });
+              return;
+            }
+
+            const newsItems = await readJsonArray(newsFile);
+            const newItem = {
+              ...validation.data,
+            };
+
+            newsItems.push(newItem);
+            await writeJsonArray(newsFile, newsItems);
+
+            sendJson(res, 201, { success: true, news: newItem });
+          } catch (error) {
+            console.error('Error al guardar la noticia:', error);
+            sendJson(res, 500, {
+              success: false,
+              message: 'No se pudo guardar la noticia',
+            });
+          }
+        });
+      },
+    },
+  };
 });
 
 async function getRequestBody(req) {

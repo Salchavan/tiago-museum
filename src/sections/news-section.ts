@@ -24,7 +24,7 @@ const loadNewsCards = async (container: HTMLElement): Promise<void> => {
   `;
 
   try {
-    const response = await fetch('./src/data/n.json');
+    const response = await fetch(`${import.meta.env.BASE_URL}data/n.json`);
     if (!response.ok) {
       throw new Error('No se pudo obtener la lista de noticias');
     }

@@ -51,7 +51,7 @@ class RestorationsSlider {
 
   private async loadRestorations(): Promise<void> {
     try {
-      const response = await fetch('./src/data/r.json');
+      const response = await fetch(`${import.meta.env.BASE_URL}data/r.json`);
       this.restorations = await response.json();
 
       // Renderizar tarjetas

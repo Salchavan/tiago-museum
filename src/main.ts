@@ -1,10 +1,12 @@
+import './tailwindcss.css';
+
 document.addEventListener('DOMContentLoaded', () => {
   const backToTopButton = document.getElementById('backToTop');
 
   document.addEventListener('keydown', (event) => {
     if (event.ctrlKey && event.key.toLowerCase() === 'k') {
       event.preventDefault();
-      window.location.href = './login.html';
+      window.location.href = `${import.meta.env.BASE_URL}login.html`;
     }
   });
 

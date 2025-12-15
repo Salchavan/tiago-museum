@@ -49,11 +49,15 @@ const initReservationForm = (): void => {
       if (mode === 'download') {
         setStatus(
           statusEl,
-          'Reserva guardada. Se descargó a.json actualizado (reemplaza src/data/a.json).',
+          'Reserva guardada. Se descargó a.json actualizado (reemplaza public/data/a.json).',
           'success'
         );
       } else if (mode === 'api') {
-        setStatus(statusEl, 'Reserva guardada en src/data/a.json.', 'success');
+        setStatus(
+          statusEl,
+          'Reserva guardada en public/data/a.json.',
+          'success'
+        );
       } else {
         setStatus(
           statusEl,
@@ -232,7 +236,9 @@ const readReservationsFromCacheOrFetch = async (): Promise<
   }
 
   try {
-    const response = await fetch('/src/data/a.json', { cache: 'no-store' });
+    const response = await fetch(`${import.meta.env.BASE_URL}data/a.json`, {
+      cache: 'no-store',
+    });
     if (!response.ok) {
       return [];
     }
