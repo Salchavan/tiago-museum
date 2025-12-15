@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "date": "12/12/2025",
+    "time": "18:00",
+    "dni": "12345678",
+    "name": "Juan Pérez",
+    "tel": "555-1234",
+    "cuantity": 2,
+    "mail": "juan.perez@example.com"
+  }
+]
