@@ -4,6 +4,7 @@
     "type": "Eventos",
     "title": "Noche de museo: recorrido guiado + música en vivo",
     "description": "Una visita especial nocturna por la Torre Céspedes, con estaciones temáticas y cierre musical en el parque. Cupos limitados, reserva previa.",
+    "info": "Patrocinador: Fundación Amigos del Museo. Requisitos: reserva previa y llegada 15 minutos antes del inicio. Entrada: gratuita con cupo limitado (confirmación por email). Límite de edad: mayores de 12 años acompañados. De qué trata: recorrido guiado nocturno con estaciones temáticas sobre historia y arquitectura, cierre con música en vivo en el parque.",
     "image": "https://picsum.photos/seed/torre-nocturna/900/600",
     "link": "https://museo.example.com/eventos/noche-de-museo"
   },
@@ -12,6 +13,7 @@
     "type": "Talleres",
     "title": "Taller familiar: mini-restauradores por un día",
     "description": "Actividad para niñas y niños (8+): materiales, limpieza y cuidado de piezas (simulación educativa) junto al equipo del museo.",
+    "info": "Patrocinador: Programa Cultura en Familia. Requisitos: inscripción online y un adulto responsable por cada menor. Entrada: arancel simbólico por kit de materiales. Límite de edad: 8 a 12 años. De qué trata: taller práctico con dinámicas educativas sobre conservación, limpieza simulada y armado de una ficha de conservación.",
     "image": "https://picsum.photos/seed/taller-restauracion/900/600",
     "link": "https://museo.example.com/talleres/mini-restauradores"
   },
@@ -20,6 +22,7 @@
     "type": "Noticias",
     "title": "Avanza la restauración del “Tintero de plata”",
     "description": "El equipo de conservación completó la etapa de diagnóstico y comenzó la limpieza controlada. Próximamente compartiremos el antes y después.",
+    "info": "Patrocinador: Instituto de Conservación Patrimonial. Requisitos: sin inscripción, actividad informativa. Entrada: libre. Límite de edad: apto para todo público. De qué trata: informe ampliado del proceso de restauración, con etapas, materiales y objetivos de preservación.",
     "image": "https://picsum.photos/seed/tintero-plata/900/600",
     "link": "https://museo.example.com/noticias/restauracion-tintero"
   },
@@ -28,6 +31,7 @@
     "type": "Eventos",
     "title": "Visita guiada para escuelas: historia y arquitectura",
     "description": "Jornada pensada para instituciones educativas: recorrido adaptado por niveles, material didáctico y espacio de preguntas.",
+    "info": "Patrocinador: Secretaría de Educación y Cultura. Requisitos: solicitud institucional y lista de asistentes. Entrada: gratuita para escuelas públicas, con cupo. Límite de edad: nivel primario y secundario. De qué trata: visita guiada con enfoque pedagógico, actividades de observación y material didáctico.",
     "image": "https://picsum.photos/seed/visita-escuelas/900/600",
     "link": "https://museo.example.com/eventos/visita-escuelas"
   },
@@ -36,6 +40,7 @@
     "type": "Noticias",
     "title": "Nuevos horarios de verano para visitas",
     "description": "Durante la temporada de verano ampliamos horarios de fin de semana. Recomendamos reservar con anticipación para recorridos guiados.",
+    "info": "Patrocinador: Ente de Turismo Local. Requisitos: reserva sugerida para visitas guiadas. Entrada: general según tarifas vigentes, con descuentos para residentes. Límite de edad: apto para todo público. De qué trata: anuncio oficial de horarios extendidos, recomendaciones y calendario de visitas.",
     "image": "https://picsum.photos/seed/horarios-verano/900/600",
     "link": "https://museo.example.com/noticias/horarios-verano"
   }

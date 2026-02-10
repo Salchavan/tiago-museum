@@ -11,7 +11,9 @@ type NewsItem = {
   type: string;
   title: string;
   description: string;
+  info: string;
   image: string;
+  images?: string[];
   link: string;
 };
 
@@ -31,6 +33,21 @@ class NewsSlider {
   private prevBtn!: HTMLElement;
   private nextBtn!: HTMLElement;
   private sliderViewport!: HTMLElement;
+
+  // Modal de detalle de noticia.
+  private newsModal: HTMLElement | null = null;
+  private newsModalTitle: HTMLElement | null = null;
+  private newsModalDate: HTMLElement | null = null;
+  private newsModalType: HTMLElement | null = null;
+  private newsModalDescription: HTMLElement | null = null;
+  private newsModalLink: HTMLAnchorElement | null = null;
+  private newsModalSliderTrack: HTMLElement | null = null;
+  private newsModalDots: HTMLElement | null = null;
+  private newsModalPrev: HTMLButtonElement | null = null;
+  private newsModalNext: HTMLButtonElement | null = null;
+  private newsModalClose: HTMLButtonElement | null = null;
+  private newsImages: string[] = [];
+  private newsSlideIndex: number = 0;
 
   constructor() {
     // Tomar referencias del DOM.
@@ -55,8 +72,34 @@ class NewsSlider {
     }
     this.sliderViewport = viewport as HTMLElement;
 
+    // Modal de detalle.
+    this.newsModal = document.getElementById('news-detail-modal');
+    this.newsModalTitle = document.getElementById('news-detail-title');
+    this.newsModalDate = document.getElementById('news-detail-date');
+    this.newsModalType = document.getElementById('news-detail-type');
+    this.newsModalDescription = document.getElementById(
+      'news-detail-description',
+    );
+    this.newsModalLink = document.getElementById(
+      'news-detail-link',
+    ) as HTMLAnchorElement | null;
+    this.newsModalSliderTrack = document.getElementById(
+      'news-detail-slider-track',
+    );
+    this.newsModalDots = document.getElementById('news-detail-dots');
+    this.newsModalPrev = document.getElementById(
+      'news-detail-prev',
+    ) as HTMLButtonElement | null;
+    this.newsModalNext = document.getElementById(
+      'news-detail-next',
+    ) as HTMLButtonElement | null;
+    this.newsModalClose = this.newsModal?.querySelector(
+      '[data-modal-close]',
+    ) as HTMLButtonElement | null;
+
     // Eventos UI (click, hover, touch).
     this.setupEventListeners();
+    this.setupNewsModal();
 
     // Responsive: decide 1/2/3 cards por vista.
     this.updateSlidesPerView();
@@ -139,7 +182,7 @@ class NewsSlider {
 
     const totalGroups = Math.max(
       1,
-      Math.ceil(this.items.length / this.slidesPerView)
+      Math.ceil(this.items.length / this.slidesPerView),
     );
 
     for (let group = 0; group < totalGroups; group++) {
@@ -181,23 +224,21 @@ class NewsSlider {
       <div class="p-6 flex-1 flex flex-col">
         <div class="flex justify-between items-center mb-4">
           <span class="text-sm font-semibold gold-text">${this.escapeHtml(
-            item.type
+            item.type,
           )}</span>
           <span class="text-gray-500 text-sm">${this.escapeHtml(
-            item.date
+            item.date,
           )}</span>
         </div>
         <h3 class="text-xl font-bold mb-3 line-clamp-2">${this.escapeHtml(
-          item.title
+          item.title,
         )}</h3>
         <p class="text-gray-700 mb-4 flex-1 line-clamp-3">${this.escapeHtml(
-          item.description
+          item.description,
         )}</p>
         <a 
           class="gold-text font-semibold hover:underline inline-flex items-center mt-auto"
-          href="${item.link || '#'}"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#"
         >
           <span>Saber más</span>
           <svg class="w-4 h-4 ml-2 transform transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -207,7 +248,163 @@ class NewsSlider {
       </div>
     `;
 
+    const link = card.querySelector('a');
+    link?.addEventListener('click', (event) => {
+      event.preventDefault();
+      this.openNewsModal(item);
+    });
+
     return card;
+  }
+
+  private setupNewsModal(): void {
+    if (!this.newsModal) {
+      return;
+    }
+
+    const closeModal = (): void => {
+      this.newsModal?.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    this.newsModalClose?.addEventListener('click', closeModal);
+
+    this.newsModal.addEventListener('click', (event) => {
+      if (event.target === this.newsModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (
+        event.key === 'Escape' &&
+        this.newsModal &&
+        !this.newsModal.classList.contains('hidden')
+      ) {
+        closeModal();
+      }
+    });
+
+    this.newsModalPrev?.addEventListener('click', () => this.prevNewsSlide());
+    this.newsModalNext?.addEventListener('click', () => this.nextNewsSlide());
+  }
+
+  private openNewsModal(item: NewsItem): void {
+    if (!this.newsModal) {
+      return;
+    }
+
+    this.renderNewsModal(item);
+    this.newsModal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  private renderNewsModal(item: NewsItem): void {
+    if (
+      !this.newsModalTitle ||
+      !this.newsModalDate ||
+      !this.newsModalType ||
+      !this.newsModalDescription ||
+      !this.newsModalLink ||
+      !this.newsModalSliderTrack ||
+      !this.newsModalDots
+    ) {
+      return;
+    }
+
+    this.newsModalTitle.textContent = item.title;
+    this.newsModalDate.textContent = item.date;
+    this.newsModalType.textContent = item.type;
+    this.newsModalDescription.textContent = item.info || item.description;
+    this.newsModalLink.href = 'https://www.clarin.com/';
+
+    this.newsImages = item.images?.length ? item.images : [item.image];
+    this.newsSlideIndex = 0;
+
+    this.newsModalSliderTrack.innerHTML = '';
+    this.newsModalDots.innerHTML = '';
+
+    this.newsImages.forEach((imageUrl, index) => {
+      const slide = document.createElement('div');
+      slide.className = 'w-full h-full flex-shrink-0';
+      slide.innerHTML = `
+        <img
+          src="${imageUrl}"
+          alt="${this.escapeHtml(item.title)} - ${index + 1}"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      `;
+      this.newsModalSliderTrack?.appendChild(slide);
+
+      const dot = document.createElement('button');
+      dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+        index === this.newsSlideIndex
+          ? 'bg-black scale-110'
+          : 'bg-gray-300 hover:bg-gray-400'
+      }`;
+      dot.addEventListener('click', () => this.goToNewsSlide(index));
+      this.newsModalDots?.appendChild(dot);
+    });
+
+    const shouldShowControls = this.newsImages.length > 1;
+    if (this.newsModalPrev) {
+      this.newsModalPrev.style.display = shouldShowControls ? 'flex' : 'none';
+    }
+    if (this.newsModalNext) {
+      this.newsModalNext.style.display = shouldShowControls ? 'flex' : 'none';
+    }
+    if (this.newsModalDots) {
+      this.newsModalDots.style.display = shouldShowControls ? 'flex' : 'none';
+    }
+
+    this.updateNewsSliderPosition();
+  }
+
+  private updateNewsSliderPosition(): void {
+    if (!this.newsModalSliderTrack) {
+      return;
+    }
+
+    this.newsModalSliderTrack.style.transform = `translateX(-${
+      this.newsSlideIndex * 100
+    }%)`;
+
+    const dots = this.newsModalDots?.querySelectorAll('button') ?? [];
+    dots.forEach((dot, index) => {
+      if (index === this.newsSlideIndex) {
+        dot.classList.remove('bg-gray-300');
+        dot.classList.add('bg-black', 'scale-110');
+      } else {
+        dot.classList.remove('bg-black', 'scale-110');
+        dot.classList.add('bg-gray-300');
+      }
+    });
+  }
+
+  private prevNewsSlide(): void {
+    if (!this.newsImages.length) {
+      return;
+    }
+
+    this.newsSlideIndex =
+      (this.newsSlideIndex - 1 + this.newsImages.length) %
+      this.newsImages.length;
+    this.updateNewsSliderPosition();
+  }
+
+  private nextNewsSlide(): void {
+    if (!this.newsImages.length) {
+      return;
+    }
+
+    this.newsSlideIndex = (this.newsSlideIndex + 1) % this.newsImages.length;
+    this.updateNewsSliderPosition();
+  }
+
+  private goToNewsSlide(index: number): void {
+    this.newsSlideIndex = index;
+    this.updateNewsSliderPosition();
   }
 
   private setupEventListeners(): void {
@@ -218,7 +415,7 @@ class NewsSlider {
     // Hover: pausa autoplay mientras el usuario interactúa.
     this.sliderTrack.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.sliderTrack.addEventListener('mouseleave', () =>
-      this.startAutoSlide()
+      this.startAutoSlide(),
     );
     this.prevBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.nextBtn.addEventListener('mouseenter', () => this.stopAutoSlide());

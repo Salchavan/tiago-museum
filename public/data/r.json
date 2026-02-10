@@ -3,6 +3,7 @@
     "restoration_id": 1,
     "title": "Tintero de plata",
     "description": "Limpieza superficial y estabilización del metal. Se documenta el estado inicial, se retira suciedad acumulada y se aplica protección para frenar la oxidación.",
+    "info": "La pieza perteneció a la familia Cárdenas (siglo XIX) y fue utilizada en la administración de la antigua estación. Se encontró en un depósito cerrado durante la restauración del ala norte. Estado original: superficie con pátina oscurecida, microfisuras y oxidación localizada. Historia: se cree que fue un regalo institucional en 1887 y aparece en inventarios antiguos. Intervención: registro fotográfico completo, limpieza mecánica controlada y estabilización con protección reversible.",
     "image": "https://picsum.photos/seed/restauracion-tintero/900/600",
     "date_started": "01/15/2024"
   },
@@ -10,6 +11,7 @@
     "restoration_id": 2,
     "title": "Marco dorado (salón principal)",
     "description": "Consolidación de capas de dorado y reposición de pequeñas pérdidas. Se realiza limpieza controlada y protección final para evitar desprendimientos.",
+    "info": "Marco original de una obra religiosa atribuida a la escuela colonial local. La pieza habría pertenecido al oratorio de la familia Rivas y llegó al museo por donación en 1962. Se encontró con pérdidas de dorado y soporte debilitado. Estado original: grietas en ensambles, suciedad adherida y desprendimientos puntuales. Intervención: consolidación de base, reposición cromática y protección final.",
     "image": "https://picsum.photos/seed/restauracion-marco/900/600",
     "date_started": "03/10/2024"
   },
@@ -17,6 +19,7 @@
     "restoration_id": 3,
     "title": "Libro de registros históricos",
     "description": "Tratamiento de papel: limpieza mecánica, reparación de desgarros y estabilización del lomo. Se prepara guarda protectora para su conservación.",
+    "info": "Libro de actas de la intendencia (1872–1891), propiedad del antiguo consejo municipal. Se halló en el archivo del museo dentro de una caja sin identificación. Estado original: hojas con manchas, lomo desprendido y papel acidificado. Historia: registra acuerdos y obras públicas fundacionales. Intervención: limpieza en seco, refuerzo de fibras y guarda de conservación.",
     "image": "https://picsum.photos/seed/restauracion-libro/900/600",
     "date_started": "06/02/2024"
   },
@@ -24,6 +27,7 @@
     "restoration_id": 4,
     "title": "Lámpara antigua de hierro",
     "description": "Desarme parcial, eliminación de óxido y repaso de anclajes. Se controla el cableado (sin energizar) y se deja lista para exhibición segura.",
+    "info": "Lámpara de hierro forjado perteneciente a la estación ferroviaria original. Se encontró en el depósito de utilería teatral en 1998. Estado original: óxido generalizado, pérdida de sujeciones y cableado obsoleto. Historia: iluminó el hall principal hasta la electrificación de 1935. Intervención: estabilización de óxidos, refuerzo de anclajes y acondicionamiento para exhibición sin energización.",
     "image": "https://picsum.photos/seed/restauracion-lampara/900/600",
     "date_started": "09/18/2024"
   },
@@ -31,6 +35,7 @@
     "restoration_id": 5,
     "title": "Vitrina de madera (exhibición)",
     "description": "Reparación de juntas, limpieza y tratamiento preventivo contra xilófagos. Se ajustan puertas y se reemplazan burletes para mejorar el sellado.",
+    "info": "Vitrina de estilo victoriano utilizada en la antigua farmacia del pueblo. Perteneció a la familia Bianchi y fue donada en 1984. Se encontró con ataques de xilófagos y deformaciones por humedad. Estado original: juntas abiertas, cristales flojos y sellado deficiente. Intervención: reintegración estructural, tratamiento anti-xilófagos y mejora del cierre para exhibición segura.",
     "image": "https://picsum.photos/seed/restauracion-vitrina/900/600",
     "date_started": "11/05/2024"
   }

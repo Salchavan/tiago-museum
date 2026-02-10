@@ -14,7 +14,9 @@ interface Restoration {
   restoration_id: number;
   title: string;
   description: string;
+  info: string;
   image: string;
+  images?: string[];
   date_started: string;
 }
 
@@ -36,6 +38,20 @@ class RestorationsSlider {
   private sliderViewport: HTMLElement;
   private modalListContainer: HTMLElement | null;
 
+  // Modal de detalle del proyecto.
+  private projectModal: HTMLElement | null;
+  private projectModalTitle: HTMLElement | null;
+  private projectModalDate: HTMLElement | null;
+  private projectModalDescription: HTMLElement | null;
+  private projectModalInfo: HTMLElement | null;
+  private projectModalSliderTrack: HTMLElement | null;
+  private projectModalDots: HTMLElement | null;
+  private projectModalPrev: HTMLButtonElement | null;
+  private projectModalNext: HTMLButtonElement | null;
+  private projectModalClose: HTMLButtonElement | null;
+  private projectImages: string[] = [];
+  private projectSlideIndex: number = 0;
+
   constructor() {
     // Inicializar elementos DOM (se asume que existen en la página).
     this.sliderTrack = document.getElementById('slider-track')!;
@@ -43,8 +59,32 @@ class RestorationsSlider {
     this.prevBtn = document.getElementById('prev-btn')!;
     this.nextBtn = document.getElementById('next-btn')!;
     this.modalListContainer = document.getElementById(
-      'restorations-modal-list'
+      'restorations-modal-list',
     );
+
+    // Modal de detalle (ver proyecto).
+    this.projectModal = document.getElementById('restoration-project-modal');
+    this.projectModalTitle = document.getElementById(
+      'restoration-project-title',
+    );
+    this.projectModalDate = document.getElementById('restoration-project-date');
+    this.projectModalDescription = document.getElementById(
+      'restoration-project-description',
+    );
+    this.projectModalInfo = document.getElementById('restoration-project-info');
+    this.projectModalSliderTrack = document.getElementById(
+      'restoration-project-slider-track',
+    );
+    this.projectModalDots = document.getElementById('restoration-project-dots');
+    this.projectModalPrev = document.getElementById(
+      'restoration-project-prev',
+    ) as HTMLButtonElement | null;
+    this.projectModalNext = document.getElementById(
+      'restoration-project-next',
+    ) as HTMLButtonElement | null;
+    this.projectModalClose = this.projectModal?.querySelector(
+      '[data-modal-close]',
+    ) as HTMLButtonElement | null;
 
     const viewport = this.sliderTrack.parentElement;
     if (!viewport) {
@@ -54,6 +94,7 @@ class RestorationsSlider {
 
     // Configurar event listeners (click/hover/teclado/swipe).
     this.setupEventListeners();
+    this.setupProjectModal();
 
     // Responsive: ajustar slides por vista según el tamaño de pantalla.
     this.updateSlidesPerView();
@@ -120,7 +161,7 @@ class RestorationsSlider {
 
     const totalGroups = Math.max(
       1,
-      Math.ceil(this.restorations.length / this.slidesPerView)
+      Math.ceil(this.restorations.length / this.slidesPerView),
     );
 
     for (let group = 0; group < totalGroups; group++) {
@@ -145,7 +186,7 @@ class RestorationsSlider {
 
   private createRestorationCard(
     restoration: Restoration,
-    variant: 'slider' | 'modal' = 'slider'
+    variant: 'slider' | 'modal' = 'slider',
   ): HTMLElement {
     // Crea una card de restauración.
     // - variant=slider: ocupa altura completa para alinearse dentro del carrusel.
@@ -165,7 +206,7 @@ class RestorationsSlider {
       {
         month: 'long',
         year: 'numeric',
-      }
+      },
     );
 
     card.innerHTML = `
@@ -244,7 +285,7 @@ class RestorationsSlider {
     // Pausar autoplay al interactuar (hover).
     this.sliderTrack.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.sliderTrack.addEventListener('mouseleave', () =>
-      this.startAutoSlide()
+      this.startAutoSlide(),
     );
     this.prevBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
     this.nextBtn.addEventListener('mouseenter', () => this.stopAutoSlide());
@@ -288,7 +329,7 @@ class RestorationsSlider {
   private prevSlide(): void {
     // Retrocede un grupo completo.
     const totalSlides = Math.ceil(
-      this.restorations.length / this.slidesPerView
+      this.restorations.length / this.slidesPerView,
     );
     this.currentIndex = (this.currentIndex - 1 + totalSlides) % totalSlides;
     this.updateSliderPosition();
@@ -297,7 +338,7 @@ class RestorationsSlider {
   private nextSlide(): void {
     // Avanza un grupo completo.
     const totalSlides = Math.ceil(
-      this.restorations.length / this.slidesPerView
+      this.restorations.length / this.slidesPerView,
     );
     this.currentIndex = (this.currentIndex + 1) % totalSlides;
     this.updateSliderPosition();
@@ -335,7 +376,7 @@ class RestorationsSlider {
     }
 
     const totalGroups = Math.ceil(
-      this.restorations.length / this.slidesPerView
+      this.restorations.length / this.slidesPerView,
     );
 
     if (totalGroups <= 1) {
@@ -356,11 +397,184 @@ class RestorationsSlider {
   }
 
   private handleProjectClick(restorationId: number): void {
-    // Demo: placeholder para detalle de proyecto.
-    console.log('Ver proyecto:', restorationId);
-    // Aquí puedes implementar lógica para mostrar detalles del proyecto
-    // Por ejemplo: abrir un modal, navegar a otra página, etc.
-    alert(`Ver detalles del proyecto ${restorationId}`);
+    const restoration = this.restorations.find(
+      (item) => item.restoration_id === restorationId,
+    );
+
+    if (!restoration) {
+      return;
+    }
+
+    this.openProjectModal(restoration);
+  }
+
+  private setupProjectModal(): void {
+    if (!this.projectModal) {
+      return;
+    }
+
+    const closeModal = (): void => {
+      this.projectModal?.classList.add('hidden');
+      document.body.classList.remove('overflow-hidden');
+    };
+
+    this.projectModalClose?.addEventListener('click', closeModal);
+
+    this.projectModal.addEventListener('click', (event) => {
+      if (event.target === this.projectModal) {
+        closeModal();
+      }
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (
+        event.key === 'Escape' &&
+        this.projectModal &&
+        !this.projectModal.classList.contains('hidden')
+      ) {
+        closeModal();
+      }
+    });
+
+    this.projectModalPrev?.addEventListener('click', () =>
+      this.prevProjectSlide(),
+    );
+    this.projectModalNext?.addEventListener('click', () =>
+      this.nextProjectSlide(),
+    );
+  }
+
+  private openProjectModal(restoration: Restoration): void {
+    if (!this.projectModal) {
+      return;
+    }
+
+    this.renderProjectModal(restoration);
+    this.projectModal.classList.remove('hidden');
+    document.body.classList.add('overflow-hidden');
+  }
+
+  private renderProjectModal(restoration: Restoration): void {
+    if (
+      !this.projectModalTitle ||
+      !this.projectModalDate ||
+      !this.projectModalDescription ||
+      !this.projectModalInfo ||
+      !this.projectModalSliderTrack ||
+      !this.projectModalDots
+    ) {
+      return;
+    }
+
+    const formattedDate = new Date(restoration.date_started).toLocaleDateString(
+      'es-ES',
+      {
+        month: 'long',
+        year: 'numeric',
+      },
+    );
+
+    this.projectModalTitle.textContent = restoration.title;
+    this.projectModalDate.textContent = `Iniciado: ${formattedDate}`;
+    this.projectModalDescription.textContent = restoration.description;
+    this.projectModalInfo.textContent = restoration.info || '';
+
+    this.projectImages = restoration.images?.length
+      ? restoration.images
+      : [restoration.image];
+    this.projectSlideIndex = 0;
+
+    this.projectModalSliderTrack.innerHTML = '';
+    this.projectModalDots.innerHTML = '';
+
+    this.projectImages.forEach((imageUrl, index) => {
+      const slide = document.createElement('div');
+      slide.className = 'w-full h-full flex-shrink-0';
+      slide.innerHTML = `
+        <img
+          src="${imageUrl}"
+          alt="${restoration.title} - ${index + 1}"
+          class="w-full h-full object-cover"
+          loading="lazy"
+        />
+      `;
+      this.projectModalSliderTrack?.appendChild(slide);
+
+      const dot = document.createElement('button');
+      dot.className = `w-2.5 h-2.5 rounded-full transition-all duration-300 ${
+        index === this.projectSlideIndex
+          ? 'bg-black scale-110'
+          : 'bg-gray-300 hover:bg-gray-400'
+      }`;
+      dot.addEventListener('click', () => this.goToProjectSlide(index));
+      this.projectModalDots?.appendChild(dot);
+    });
+
+    const shouldShowControls = this.projectImages.length > 1;
+    if (this.projectModalPrev) {
+      this.projectModalPrev.style.display = shouldShowControls
+        ? 'flex'
+        : 'none';
+    }
+    if (this.projectModalNext) {
+      this.projectModalNext.style.display = shouldShowControls
+        ? 'flex'
+        : 'none';
+    }
+    if (this.projectModalDots) {
+      this.projectModalDots.style.display = shouldShowControls
+        ? 'flex'
+        : 'none';
+    }
+
+    this.updateProjectSliderPosition();
+  }
+
+  private updateProjectSliderPosition(): void {
+    if (!this.projectModalSliderTrack) {
+      return;
+    }
+
+    this.projectModalSliderTrack.style.transform = `translateX(-${
+      this.projectSlideIndex * 100
+    }%)`;
+
+    const dots = this.projectModalDots?.querySelectorAll('button') ?? [];
+    dots.forEach((dot, index) => {
+      if (index === this.projectSlideIndex) {
+        dot.classList.remove('bg-gray-300');
+        dot.classList.add('bg-black', 'scale-110');
+      } else {
+        dot.classList.remove('bg-black', 'scale-110');
+        dot.classList.add('bg-gray-300');
+      }
+    });
+  }
+
+  private prevProjectSlide(): void {
+    if (!this.projectImages.length) {
+      return;
+    }
+
+    this.projectSlideIndex =
+      (this.projectSlideIndex - 1 + this.projectImages.length) %
+      this.projectImages.length;
+    this.updateProjectSliderPosition();
+  }
+
+  private nextProjectSlide(): void {
+    if (!this.projectImages.length) {
+      return;
+    }
+
+    this.projectSlideIndex =
+      (this.projectSlideIndex + 1) % this.projectImages.length;
+    this.updateProjectSliderPosition();
+  }
+
+  private goToProjectSlide(index: number): void {
+    this.projectSlideIndex = index;
+    this.updateProjectSliderPosition();
   }
 
   private showErrorState(): void {
